@@ -52,3 +52,6 @@ ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 .DS_Store
+
+# Command Code agent metadata
+.commandcode/
