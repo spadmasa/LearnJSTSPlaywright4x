@@ -77,12 +77,12 @@ flowchart LR
 
 | # | Chapter | Folder | Status | What you learn |
 |:--|:--------|:-------|:------:|:---------------|
-| 00 | Prompt Engineering | [00_chapter_Prompt_Eng](00_chapter_Prompt_Eng/) | ✅ Done | RICE-POT prompts, anti-hallucination rules, the Selenium framework a prompt generated |
-| 01 | JavaScript Basics | [01_chapter_JS_Basics](01_chapter_JS_Basics/) | ✅ Done | Running a file with Node, `console.log`, arithmetic expressions |
-| 02 | Keywords and Identifiers | [02_chapter_JS_Keywrods_Identifiers](02_chapter_JS_Keywrods_Identifiers/) | ✅ Done | How V8 runs code, `var`/`let`/`const`, identifier rules, naming conventions, comments |
+| 00 | Prompt Engineering | [Selenium_Framework](Selenium_Framework/) | ✅ Done | RICE-POT prompts, anti-hallucination rules, the Selenium framework a prompt generated |
+| 01 | JavaScript Basics | [01_chapter_Javascript_Basics](01_chapter_Javascript_Basics/) | ✅ Done | Running a file with Node, `console.log`, arithmetic expressions |
+| 02 | Keywords and Identifiers | [02_chapter_Javascript_Keywords_Indentifiers](02_chapter_Javascript_Keywords_Indentifiers/) | ✅ Done | How V8 runs code, `var`/`let`/`const`, identifier rules, naming conventions, comments |
 | 03 | Literals | [03_chapter_JS_Literals](03_chapter_JS_Literals/) | ✅ Done | `typeof`, `null` vs `undefined`, number bases, exponents, numeric separators, BigInt, `Infinity`, `NaN` |
 | 04 | Operators | [04_chapter_JS_Operators](04_chapter_JS_Operators/) | ✅ Done | Data types, assignment, arithmetic, `==` vs `===`, `&&` `\|\|` `!`, coercion traps, strings and template literals, ternary, `typeof` |
-| 05 | Increment, Decrement and Nullish | [05_chapter_JS_Incre_Decr_Op](05_chapter_JS_Incre_Decr_Op/) | 🟡 In progress | `++a` vs `a++`, `--a` vs `a--`, step-by-step interview questions, `??` |
+| 05 | Increment, Decrement and Nullish | [05_chapter_JS_Incre_decre_Op](05_chapter_JS_Incre_decre_Op/) | 🟡 In progress | `++a` vs `a++`, `--a` vs `a--`, step-by-step interview questions, `??` |
 
 ---
 
@@ -93,17 +93,23 @@ LearnJSTSPlaywright4x/
 ├── README.md
 ├── .gitignore
 ├── assets/images/                          # Banner and chapter cheat-sheet images used in this README
-├── 00_chapter_Prompt_Eng/
+├── Selenium_Framework/                     # Chapter 00: Prompt Engineering + the framework the prompt produced
 │   ├── 00_RICE_POT_FullForm.md             # What each RICE-POT letter means
 │   ├── 01_RICE_POT_Prompt.md               # Worked prompt: Salesforce login (Selenium + TestNG)
 │   ├── 02_Problem_Statement.md             # The objective the prompt solves
-│   ├── 03_Anti_Hallucinations.md           # Version anchors, negative constraints, self-checks
+│   ├── 03_Anti_Haluncinations.md           # Version anchors, negative constraints, self-checks
 │   ├── 04_RICE_POT_Generic_QA_Template.md  # Reusable template: test plans, cases, automation
-│   └── Selenium_Framework/                 # The framework the prompt produced (Java 17, TestNG)
-├── 01_chapter_JS_Basics/
+│   ├── pom.xml                             # Maven build (Java 17, Selenium 4.27, TestNG 7.10)
+│   ├── testng.xml                          # TestNG suite: ValidLoginTest + InvalidLoginTest
+│   └── src/
+│       ├── main/java/com/salesforce/pages/LoginPage.java              # Page Object (PageFactory + @FindBy XPath)
+│       └── test/java/com/salesforce/
+│           ├── base/BaseTest.java                                     # WebDriver setup / teardown
+│           └── tests/ValidLoginTest.java, InvalidLoginTest.java        # Login test cases
+├── 01_chapter_Javascript_Basics/
 │   ├── 01_HelloWorld.js                    # First program: console.log
-│   └── 02_Math.js                          # Arithmetic expressions
-├── 02_chapter_JS_Keywrods_Identifiers/
+│   └── 02_Maths.js                         # Arithmetic expressions
+├── 02_chapter_Javascript_Keywords_Indentifiers/
 │   ├── 03_js_engine.js                     # How V8 runs a file, hot code and JIT
 │   ├── 04_letengine.js                     # Smallest program: one let declaration
 │   ├── 05_KW_IND.js                        # Keyword vs identifier: var, let, const
@@ -112,22 +118,22 @@ LearnJSTSPlaywright4x/
 │   ├── 08_Comments.js                      # Single-line, multi-line and JSDoc comments
 │   └── 09_IQ.js                            # Interview drill: valid vs invalid identifiers
 ├── 03_chapter_JS_Literals/
-│   ├── 10_Literal.js                       # A literal is the value you write: let a = 10
-│   ├── 11_Numberal.js                      # String, number, boolean, null literals + typeof
+│   ├── 10_Literals.js                      # A literal is the value you write: let a = 10
+│   ├── 11_Typeof.js                        # String, number, boolean, null literals + typeof
 │   ├── 12_Null_Undefined.js                # null vs undefined, typeof null is "object"
 │   ├── 13_Null.js                          # Practice: a null and an undefined variable
 │   ├── 14_Literals.js                      # Integers, hex, octal, exponent literals
 │   ├── 15_Number.js                        # Binary, octal, hex, floats, exponential notation
-│   ├── 16_Numbers_PART2.js                 # Numeric separators (1_000_000) and BigInt
+│   ├── 16_Numbers_Part2.js                 # Numeric separators (1_000_000) and BigInt
 │   ├── 17_Special.js                       # Infinity, -Infinity, NaN
-│   └── 18_undefined.js                     # Practice: undefined vs null
+│   └── 18_Undefined.js                     # Practice: undefined vs null
 ├── 04_chapter_JS_Operators/
 │   ├── 19_Arch.js                          # Anatomy of an expression, JS data types
-│   ├── 20_Assigment_Op.js                  # = and reassigning a variable
-│   ├── 21_Arithematic_Op.js                # + - * / % ** and the odd/even check
-│   ├── 22_Comparsion_Op.js                 # == vs ===, != vs !==
+│   ├── 20_Assignment_Op.js                 # = and reassigning a variable
+│   ├── 21_Arithmetic_Op.js                 # + - * / % ** and the odd/even check
+│   ├── 22_Comparison_Op.js                 # == vs ===, != vs !==
 │   ├── 23_Logical_Op.js                    # && || !
-│   ├── 24_Confusing_Comparsion.js          # "" == 0, "0" == 0, "" == "0"
+│   ├── 24_Confusing_Comparison.js          # "" == 0, "0" == 0, "" == "0"
 │   ├── 25_CC.js                            # (empty, work in progress)
 │   ├── 26_Question.js                      # Quiz: != vs !==, and why !=== does not exist
 │   ├── 27_String.js                        # + and += on strings, console.log with commas
@@ -141,14 +147,14 @@ LearnJSTSPlaywright4x/
 │   ├── 35_IQ.js                            # Chained ternary: HTTP status categories
 │   ├── 36_IQ.js                            # Chained ternary: temperature bands
 │   └── 37_TypeOf.js                        # typeof on strings and numbers
-└── 05_chapter_JS_Incre_Decr_Op/
+└── 05_chapter_JS_Incre_decre_Op/
     ├── 38_ID_Op.js                         # Pre-increment: ++a
     ├── 39_ID.js                            # Post-increment: a++
     ├── 40_IQ.js                            # ++a + a
     ├── 41_IQ.js                            # ++a + a + a++
     ├── 42_IQ.js                            # i++ + ++i
     ├── 43_De.js                            # Pre-decrement: --a
-    ├── 44.js                               # Post-decrement: a--
+    ├── 44_IQ.js                            # Post-decrement: a--
     └── 45_Nullish.js                       # ?? : fallback only for null / undefined
 ```
 
@@ -159,10 +165,10 @@ LearnJSTSPlaywright4x/
 You only need [Node.js](https://nodejs.org/) 18 or newer. No `npm install` yet.
 
 ```bash
-git clone https://github.com/PramodDutta/LearnJSTSPlaywright4x.git
+git clone https://github.com/spadmasa/LearnJSTSPlaywright4x.git
 cd LearnJSTSPlaywright4x
-node --version                              # v18+ (tested on v22)
-node 01_chapter_JS_Basics/01_HelloWorld.js  # Hello World!
+node --version                                          # v18+ (tested on v22)
+node 01_chapter_Javascript_Basics/01_HelloWorld.js      # Hello World!
 ```
 
 Every lesson file runs the same way: `node <chapter folder>/<file>.js`.
@@ -180,9 +186,9 @@ Every lesson file runs the same way: `node <chapter folder>/<file>.js`.
 **Why:** A one-line prompt like "write Selenium code" gets you outdated APIs and invented methods; RICE-POT plus explicit anti-hallucination rules pins the model to real versions, real patterns, and a fixed output shape.
 
 **Q&A: why use this?**
-- **Q: When do I reach for it?** A: Any time you ask an AI for a framework, test plan, or test cases. The [generic QA template](00_chapter_Prompt_Eng/04_RICE_POT_Generic_QA_Template.md) covers all four task types.
+- **Q: When do you reach for it?** A: Any time you ask an AI for a framework, test plan, or test cases. The [generic QA template](Selenium_Framework/04_RICE_POT_Generic_QA_Template.md) covers all four task types.
 - **Q: What does it replace?** A: Ad-hoc, one-line prompts that leave the model to guess your stack, your versions, and what "done" looks like.
-- **Q: What's the gotcha?** A: A well-structured prompt can still produce invented APIs. Pin library versions and add "do NOT" rules ([03_Anti_Hallucinations.md](00_chapter_Prompt_Eng/03_Anti_Hallucinations.md)), then review the code before trusting it.
+- **Q: What's the gotcha?** A: A well-structured prompt can still produce invented APIs. Pin library versions and add "do NOT" rules ([03_Anti_Haluncinations.md](Selenium_Framework/03_Anti_Haluncinations.md)), then review the code before trusting it.
 
 ```mermaid
 flowchart LR
@@ -195,7 +201,7 @@ flowchart LR
     V -->|Yes| F[Selenium_Framework/]
 ```
 
-The anti-hallucination block from [03_Anti_Hallucinations.md](00_chapter_Prompt_Eng/03_Anti_Hallucinations.md), ready to paste under any RICE-POT prompt:
+The anti-hallucination block from [03_Anti_Haluncinations.md](Selenium_Framework/03_Anti_Haluncinations.md), ready to paste under any RICE-POT prompt:
 
 ```markdown
 Role: Senior SDET Automation Architect.
@@ -211,7 +217,7 @@ Constraints & Anti-Hallucination Rules:
 4. Completeness: Ensure all import statements are fully qualified and valid.
 ```
 
-The full result of this prompt lives in [Selenium_Framework/](00_chapter_Prompt_Eng/Selenium_Framework/README.md).
+The full result of this prompt lives in [Selenium_Framework/](Selenium_Framework/).
 
 ---
 
@@ -242,12 +248,12 @@ sequenceDiagram
 ```
 
 ```js
-// 01_chapter_JS_Basics/01_HelloWorld.js
+// 01_chapter_Javascript_Basics/01_HelloWorld.js
 console.log("Hello World!");
 ```
 
 ```bash
-$ node 01_chapter_JS_Basics/01_HelloWorld.js
+$ node 01_chapter_Javascript_Basics/01_HelloWorld.js
 Hello World!
 ```
 
@@ -272,13 +278,13 @@ flowchart LR
 ```
 
 ```js
-// 01_chapter_JS_Basics/02_Math.js
+// 01_chapter_Javascript_Basics/02_Maths.js
 console.log(1+2);
 console.log(2*2);
 ```
 
 ```bash
-$ node 01_chapter_JS_Basics/02_Math.js
+$ node 01_chapter_Javascript_Basics/02_Maths.js
 3
 4
 ```
@@ -319,7 +325,7 @@ flowchart LR
 ```
 
 ```js
-// 02_chapter_JS_Keywrods_Identifiers/03_js_engine.js
+// 02_chapter_Javascript_Keywords_Indentifiers/03_js_engine.js
 let a = 10;
 console.log(a);
 
@@ -335,7 +341,7 @@ console.log(a);
 ```
 
 ```bash
-$ node 02_chapter_JS_Keywrods_Identifiers/03_js_engine.js
+$ node 02_chapter_Javascript_Keywords_Indentifiers/03_js_engine.js
 10
 ```
 
@@ -372,7 +378,7 @@ flowchart TD
 | Use before the declaration line | `undefined` | ❌ `ReferenceError` | ❌ `ReferenceError` |
 
 ```js
-// 02_chapter_JS_Keywrods_Identifiers/05_KW_IND.js
+// 02_chapter_Javascript_Keywords_Indentifiers/05_KW_IND.js
 var v = 10;   // keyword: var,   identifier: v
 let l = 10;   // keyword: let,   identifier: l
 const c = 10; // keyword: const, identifier: c
@@ -405,7 +411,7 @@ flowchart TD
 ```
 
 ```js
-// 02_chapter_JS_Keywrods_Identifiers/06_KW_IND_Rules.js (excerpt)
+// 02_chapter_Javascript_Keywords_Indentifiers/06_KW_IND_Rules.js (excerpt)
 var a = 10;
 var $ = 10;               // $ alone is a valid name
 var _a = 23;
@@ -450,7 +456,7 @@ flowchart LR
 | Hungarian | `bActive` | Legacy code only |
 
 ```js
-// 02_chapter_JS_Keywrods_Identifiers/07_IND_Rules2.js (excerpt)
+// 02_chapter_Javascript_Keywords_Indentifiers/07_IND_Rules2.js (excerpt)
 let userName = "camelCase";          // 1. camelCase
 let isLoggedIn = true;
 
@@ -486,7 +492,7 @@ flowchart LR
 ```
 
 ```js
-// 02_chapter_JS_Keywrods_Identifiers/08_Comments.js
+// 02_chapter_Javascript_Keywords_Indentifiers/08_Comments.js
 // This is a single-line comment, it will be ignored
 // this line will not be executed
 
@@ -512,7 +518,7 @@ var g = 10; // cmd + /, ctrl + /
 **Why:** These questions check whether you know the actual rule or only the everyday cases, and the edge cases (Unicode, escapes) are where people get caught.
 
 **Q&A: why use this?**
-- **Q: When do you reach for it?** A: Before an interview, or when a reviewer asks "is that even legal?". Run `node 02_chapter_JS_Keywrods_Identifiers/09_IQ.js`: it exits silently, which proves every uncommented line is valid.
+- **Q: When do you reach for it?** A: Before an interview, or when a reviewer asks "is that even legal?". Run `node 02_chapter_Javascript_Keywords_Indentifiers/09_IQ.js`: it exits silently, which proves every uncommented line is valid.
 - **Q: What does it replace?** A: Memorising a list. It is the same rule as lesson 06, applied to Unicode: `café` and `变量` are valid because `é` and `变` count as letters.
 - **Q: What's the gotcha?** A: `let A = ...` declares a variable named `A`, because the escape is decoded before the name is checked. And `Function` is a built-in, not a reserved word: `let Function = "x"` runs and shadows the global. Reserved words such as `class` or `let` are the ones that fail.
 
@@ -532,7 +538,7 @@ flowchart LR
 ```
 
 ```js
-// 02_chapter_JS_Keywrods_Identifiers/09_IQ.js (excerpt)
+// 02_chapter_Javascript_Keywords_Indentifiers/09_IQ.js (excerpt)
 let validName = "starts with letter";
 let _private = "starts with underscore";
 let $jquery = "starts with dollar sign";
@@ -581,7 +587,7 @@ flowchart LR
 ```
 
 ```js
-// 03_chapter_JS_Literals/11_Numberal.js
+// 03_chapter_JS_Literals/11_Typeof.js
 let age = "pramod";     // string literal
 let age2 = 'pramod';    // same string, single quotes
 let isStudent = true;   // boolean literal
@@ -597,7 +603,7 @@ console.log(typeof nullValue);      // object
 console.log(typeof undefinedValue); // undefined
 ```
 
-`10_Literal.js` is the one-line version: in `let a = 10;` the literal is `10`.
+`10_Literals.js` is the one-line version: in `let a = 10;` the literal is `10`.
 
 ### 12: null vs undefined
 
@@ -647,7 +653,7 @@ console.log(profilePicture);        // null
 console.log(typeof profilePicture); // object   <-- known JS quirk!
 ```
 
-`13_Null.js` and `18_undefined.js` are two-line practice files: one variable left `undefined`, one set to `null`.
+`13_Null.js` and `18_Undefined.js` are two-line practice files: one variable left `undefined`, one set to `null`.
 
 ### 14: Number Literals: Bases and Exponents
 
@@ -721,7 +727,7 @@ flowchart TD
 ```
 
 ```js
-// 03_chapter_JS_Literals/16_Numbers_PART2.js
+// 03_chapter_JS_Literals/16_Numbers_Part2.js
 let million = 1_000_000;      // same as 1000000
 let binarySep = 0b1010_0001;
 let hexSep = 0xFF_FF;
@@ -844,7 +850,7 @@ flowchart LR
 | `**=` | `x = x ** n` | `x **= 2` | 100 |
 
 ```js
-// 04_chapter_JS_Operators/20_Assigment_Op.js
+// 04_chapter_JS_Operators/20_Assignment_Op.js
 let x = 10;
 x = "PrrammodDutta";   // let allows a new value, even a new type
 console.log(x);        // PrrammodDutta
@@ -876,7 +882,7 @@ flowchart TD
 ```
 
 ```js
-// 04_chapter_JS_Operators/21_Arithematic_Op.js
+// 04_chapter_JS_Operators/21_Arithmetic_Op.js
 let a = 10;
 let b = 3;
 
@@ -923,7 +929,7 @@ flowchart TD
 | `!==` | Strict not equal | `5 !== "5"` | `true` |
 
 ```js
-// 04_chapter_JS_Operators/22_Comparsion_Op.js (excerpt)
+// 04_chapter_JS_Operators/22_Comparison_Op.js (excerpt)
 console.log(3 > 4);      // false
 console.log(3 < 4);      // true
 console.log(4 >= 4);     // true
@@ -999,7 +1005,7 @@ flowchart TD
 ```
 
 ```js
-// 04_chapter_JS_Operators/24_Confusing_Comparsion.js
+// 04_chapter_JS_Operators/24_Confusing_Comparison.js
 // Rule of thumb:
 //   ==   → loose equality  (does type coercion, surprising)
 //   ===  → strict equality (no coercion, what you usually want)
@@ -1239,7 +1245,7 @@ flowchart LR
 | `let b = a--;` | 10 | 9 |
 
 ```js
-// 05_chapter_JS_Incre_Decr_Op/38_ID_Op.js: pre-increment
+// 05_chapter_JS_Incre_decre_Op/38_ID_Op.js: pre-increment
 let a = 10;
 let b = ++a;          // a becomes 11, then b gets 11
 console.log(b, a);    // 11 11
@@ -1249,7 +1255,7 @@ let c = 10;
 let d = c++;          // d gets 10, then c becomes 11
 console.log(d, c);    // 10 11
 
-// 43_De.js and 44.js: the same rules with --
+// 43_De.js and 44_IQ.js: the same rules with --
 let e = 10;
 console.log(--e, e);  // 9 9
 let f = 10;
@@ -1279,7 +1285,7 @@ flowchart LR
 | `i++ + ++i` (i = 1) | 1 + 3 | 4 | i = 3 |
 
 ```js
-// 05_chapter_JS_Incre_Decr_Op/40_IQ.js
+// 05_chapter_JS_Incre_decre_Op/40_IQ.js
 let a = 10;
 console.log(++a + a);        // 22  (11 + 11)
 console.log(a);              // 11
@@ -1322,7 +1328,7 @@ flowchart TD
 | `"Pramod"` | `"Pramod"` | `"Pramod"` |
 
 ```js
-// 05_chapter_JS_Incre_Decr_Op/45_Nullish.js (commented examples switched on)
+// 05_chapter_JS_Incre_decre_Op/45_Nullish.js (commented examples switched on)
 let amul = null;
 let val = amul ?? "NANDANI Milk";
 console.log(val);            // NANDANI Milk
