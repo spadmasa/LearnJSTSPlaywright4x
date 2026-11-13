@@ -3,8 +3,8 @@ async function getExmaple(){
 }
 
 
-import { test, type Page } from '@playwright/test';
-test('user say hello', async ({ page }: { page: Page })=>{
+import { test} from '@playwright/test';
+test('user say hello', async ({ page})=>{
             let t=  await page.goto("");
             let c = await getExmaple();
 });
