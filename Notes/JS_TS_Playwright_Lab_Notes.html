@@ -1,0 +1,1366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JavaScript, TypeScript &amp; Playwright — Lab Notes (Labs 1–218)</title>
+<style>
+  @page { size: A4; margin: 13mm 14mm 14mm; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    margin: 0; color: #1b1f24; background: #fff;
+    font: 10.4pt/1.5 "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  .wrap { max-width: 190mm; margin: 0 auto; }
+  h1, h2, h3, h4 { line-height: 1.25; margin: 0; }
+  h2 {
+    font-size: 16pt; margin: 0 0 4mm; padding-bottom: 2mm;
+    border-bottom: 2.5px solid #f0b400; color: #111;
+  }
+  h3 { font-size: 12pt; margin: 5mm 0 2mm; color: #0b3d3b; }
+  h4 { font-size: 10.6pt; margin: 3.5mm 0 1.5mm; color: #333; }
+  p { margin: 0 0 2.2mm; }
+  ul, ol { margin: 0 0 2.5mm; padding-left: 5.5mm; }
+  li { margin: 0 0 1mm; }
+  code {
+    font: 8.9pt/1.45 Consolas, "Cascadia Mono", ui-monospace, monospace;
+    background: #f4f2ec; border: 1px solid #e6e1d6; border-radius: 3px;
+    padding: 0.3mm 1.1mm;
+  }
+  pre {
+    font: 8.7pt/1.45 Consolas, "Cascadia Mono", ui-monospace, monospace;
+    background: #f7f6f1; border: 1px solid #e3ded2; border-left: 3px solid #f0b400;
+    border-radius: 4px; padding: 2.6mm 3mm; margin: 2mm 0 3mm;
+    white-space: pre-wrap; page-break-inside: avoid;
+  }
+  pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+  table {
+    border-collapse: collapse; width: 100%; margin: 2mm 0 3.5mm;
+    font-size: 8.9pt; page-break-inside: avoid;
+  }
+  th, td { border: 1px solid #dcd7ca; padding: 1.4mm 2mm; text-align: left; vertical-align: top; }
+  th { background: #f6f1e2; font-weight: 600; }
+  td code, th code { font-size: 8.4pt; background: #f7f5ee; }
+  .sec { page-break-before: always; }
+  .sec:first-of-type { page-break-before: avoid; }
+  .cover { page-break-after: always; text-align: left; padding-top: 22mm; }
+  .cover .kicker { font-size: 10pt; letter-spacing: .18em; text-transform: uppercase; color: #8a7a3a; }
+  .cover h1 { font-size: 34pt; margin: 3mm 0 2mm; letter-spacing: -.5px; }
+  .cover .sub { font-size: 13pt; color: #4a4f57; max-width: 145mm; }
+  .cover .rule { height: 4px; background: #f0b400; width: 55mm; margin: 8mm 0; }
+  .cover .meta { font-size: 9.5pt; color: #5c6169; margin-top: 4mm; }
+  .cover .grid { display: table; margin-top: 10mm; width: 100%; }
+  .cover .grid > div { display: table-cell; width: 33%; padding-right: 6mm; font-size: 9.2pt; }
+  .cover .grid b { display: block; font-size: 10pt; color: #111; margin-bottom: 1mm; }
+  .note { border-left: 3px solid #2f7d63; background: #eef7f2; padding: 2mm 3mm; margin: 2mm 0 3mm; font-size: 9.6pt; page-break-inside: avoid; }
+  .warn { border-left: 3px solid #c0392b; background: #fdf0ee; padding: 2mm 3mm; margin: 2mm 0 3mm; font-size: 9.6pt; page-break-inside: avoid; }
+  .qa { border-left: 3px solid #2c5fa8; background: #eef3fb; padding: 2mm 3mm; margin: 2mm 0 3mm; font-size: 9.5pt; page-break-inside: avoid; }
+  .qa b { color: #1d3f73; }
+  .cols { column-count: 2; column-gap: 7mm; }
+  .cols table { font-size: 8.4pt; }
+  .toc { column-count: 2; column-gap: 8mm; font-size: 9.4pt; }
+  .toc div { margin-bottom: 1.4mm; break-inside: avoid; }
+  .toc span { color: #8a7a3a; font-variant-numeric: tabular-nums; display: inline-block; width: 9mm; }
+  .lab { color: #8a7a3a; font-size: 8.6pt; letter-spacing: .04em; }
+  .fine { font-size: 8.6pt; color: #5c6169; }
+  .answer { color: #2f7d63; font-weight: 600; }
+  footer { margin-top: 6mm; border-top: 1px solid #e3ded2; padding-top: 2mm; font-size: 8.4pt; color: #7a7f86; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============ COVER ============ -->
+<section class="cover">
+  <div class="kicker">Revision Notes</div>
+  <h1>JavaScript, TypeScript &amp;<br>Playwright</h1>
+  <p class="sub">Condensed notes from all 218 lab exercises in this repository (chapters 00–31), written to be skimmed the night before an interview and read once more before a Playwright project.</p>
+  <div class="rule"></div>
+  <div class="meta">
+    Source: <code>LearnJSTSPlaywright4x/</code> &nbsp;·&nbsp; Labs 1–45 from the chapter READMEs, 46–218 from the lesson files<br>
+    Runtime: Node.js 18+ (checked on Node 22/24) &nbsp;·&nbsp; Playwright 1.65 &nbsp;·&nbsp; TypeScript 5.x annotations as used in the labs
+  </div>
+  <div class="grid">
+    <div><b>What is inside</b>Every concept from the labs, the rules that decide behaviour, the traps that bite in tests, and a rapid-fire answer key.</div>
+    <div><b>How to use it</b>Read Part 1–2 once, keep Part 3–6 as reference while coding, drill Part 9 before an interview.</div>
+    <div><b>Golden rule</b>Compare with <code>===</code>, copy objects on purpose, <code>await</code> every browser call, and read a value's type before trusting a result.</div>
+  </div>
+</section>
+
+<!-- ============ TOC ============ -->
+<section class="sec">
+  <h2>Contents</h2>
+  <div class="toc">
+    <div><span>00</span>How the labs are organised</div>
+    <div><span>01</span>Running code &amp; the engine (1–4)</div>
+    <div><span>02</span>Keywords, identifiers, comments (5–9)</div>
+    <div><span>03</span>Literals, types, typeof (10–18)</div>
+    <div><span>04</span>Operators (19–37)</div>
+    <div><span>05</span>Increment, decrement, nullish (38–45)</div>
+    <div><span>06</span>if / else and switch (46–58)</div>
+    <div><span>07</span>Input, loops, patterns (59–77)</div>
+    <div><span>08</span>Arrays (78–100)</div>
+    <div><span>09</span>Functions (101–116)</div>
+    <div><span>10</span>var / let / const, hoisting, TDZ (117–127)</div>
+    <div><span>11</span>Closures (128)</div>
+    <div><span>12</span>Strings (129–131)</div>
+    <div><span>13</span>Objects and copying (132–139)</div>
+    <div><span>14</span>2D arrays and patterns (140–146)</div>
+    <div><span>15</span>Callbacks (147–154)</div>
+    <div><span>16</span>Promises (155–161)</div>
+    <div><span>17</span>async / await (162–171)</div>
+    <div><span>18</span>Modules: import / export (172–174)</div>
+    <div><span>19</span>Classes and constructors (175–187)</div>
+    <div><span>20</span>Encapsulation (188–194)</div>
+    <div><span>21</span>Inheritance &amp; polymorphism (195–208)</div>
+    <div><span>22</span>TypeScript (209–218)</div>
+    <div><span>23</span>Playwright chapter (24_Playwright)</div>
+    <div><span>24</span>Interview traps: 30 one-liners</div>
+    <div><span>25</span>Output prediction drill + answers</div>
+    <div><span>26</span>Bug hunt: what is wrong here?</div>
+    <div><span>27</span>Glossary</div>
+    <div><span>28</span>Lab → topic index</div>
+  </div>
+
+  <h3>00 · How the labs are organised</h3>
+  <p>Every lab is a single runnable file: <code>node &lt;folder&gt;/&lt;file&gt;.js</code>. The number in the file name is the lab number, so lab <code>101_Fn.js</code> is the 101st exercise. Files marked <code>_IQ</code> are interview drills; files marked <code>REAL</code> are QA-flavoured versions of the same idea. Several files deliberately contain code that throws — that is the lesson. Where a lab's comment mislabels a result, these notes give the correct one.</p>
+  <table>
+    <tr><th>Warning sign in a lab</th><th>What it is teaching</th></tr>
+    <tr><td>Code commented out inside a file</td><td>The "what would happen" variant — often a SyntaxError or infinite loop</td></tr>
+    <tr><td>Two variables with the same name in one file</td><td>Copy-paste hazard; the notes rename them when showing both</td></tr>
+    <tr><td><code>console.log</code> with no assertion</td><td>These labs build intuition, not a test suite</td></tr>
+  </table>
+</section>
+
+<!-- ============ 01 ENGINE ============ -->
+<section class="sec">
+  <h2>01 · Running code &amp; the engine <span class="lab">labs 1–4</span></h2>
+
+  <h3>Hello world and expressions</h3>
+  <pre><code>console.log("Hello World!");   // prints, then a newline
+console.log(1 + 2);             // 3  — the expression is evaluated first
+console.log(2 * 2);             // 4</code></pre>
+  <p><code>console.log</code> is your first debugger. With commas it inserts a space: <code>console.log("a", 1)</code> → <code>a 1</code>. With <code>+</code> it concatenates instead.</p>
+
+  <h3>How Node runs a file</h3>
+  <p>Node hands the file to V8. V8 <b>parses the whole file first</b>, compiles it to bytecode, runs it in the interpreter (Ignition), and recompiles "hot" code — a loop body that runs many times — into machine code (TurboFan). That is JIT compilation.</p>
+  <div class="warn"><b>Consequence:</b> one syntax error anywhere stops the file from running at all — even the <code>console.log</code> on line 1 never prints. A <i>runtime</i> error (e.g. calling an undefined function) only stops execution at that line, after earlier lines have already run.</div>
+  <pre><code>let a = 10;
+console.log(a);        // 10
+// A commented-out 100,000-iteration loop in the lab shows "hot" code:
+// the second time through, TurboFan may have compiled the loop body.</code></pre>
+  <div class="qa"><b>One-liner:</b> JavaScript is parsed and compiled, not read line by line. Syntax errors are all-or-nothing; runtime errors happen where they happen.</div>
+</section>
+
+<!-- ============ 02 IDENTIFIERS ============ -->
+<section class="sec">
+  <h2>02 · Keywords, identifiers, comments <span class="lab">labs 5–9</span></h2>
+
+  <h3>Anatomy of a declaration</h3>
+  <p>In <code>let l = 10;</code> → <b>keyword</b> <code>let</code>, <b>identifier</b> <code>l</code>, <b>operator</b> <code>=</code>, <b>literal</b> <code>10</code>. A keyword is owned by the language and cannot be a name. An identifier is the name you choose.</p>
+
+  <table>
+    <tr><th></th><th><code>var</code></th><th><code>let</code></th><th><code>const</code></th></tr>
+    <tr><td>Scope</td><td>function</td><td>block</td><td>block</td></tr>
+    <tr><td>Redeclare in same scope</td><td>allowed</td><td>SyntaxError</td><td>SyntaxError</td></tr>
+    <tr><td>Reassign</td><td>allowed</td><td>allowed</td><td>TypeError</td></tr>
+    <tr><td>Read before declaration</td><td><code>undefined</code></td><td>ReferenceError (TDZ)</td><td>ReferenceError (TDZ)</td></tr>
+    <tr><td>Needs initial value</td><td>no</td><td>no</td><td>yes at declaration</td></tr>
+  </table>
+  <p class="fine">Lab 5's rule of thumb for QA scripts: <code>let</code> ≈ 96%, <code>const</code> ≈ 3% (URLs, timeouts, config), <code>var</code> ≈ 1% (older code only).</p>
+
+  <h3>Identifier rules</h3>
+  <ol>
+    <li>First character: a letter, <code>_</code> or <code>$</code>.</li>
+    <li>Rest: letters, digits, <code>_</code>, <code>$</code>.</li>
+    <li>Not a reserved word (<code>class</code>, <code>let</code>, <code>if</code>, <code>return</code>…).</li>
+    <li>Case sensitive: <code>Name</code> and <code>name</code> are different variables.</li>
+  </ol>
+  <pre><code>var _ = 10;      var $ = 10;      var ab123 = 23;      // legal
+let café = "ok"; let 变量 = "ok";  let \u0041 = "A";   // legal (Unicode letters, escapes)
+// var 45 = 34;            SyntaxError: Unexpected number
+// var my-name = "x";      SyntaxError: Unexpected token '-'
+// var my name = "x";      SyntaxError: Unexpected identifier
+// var class = "x";        SyntaxError: Unexpected reserved word</code></pre>
+  <div class="warn"><b>Trap:</b> <code>Function</code>, <code>String</code>, <code>Number</code> are built-ins, not reserved words, so <code>let Function = "x"</code> runs — it simply shadows the global. Only true reserved words fail.</div>
+
+  <h3>Naming conventions (not enforced by the engine)</h3>
+  <table>
+    <tr><th>Style</th><th>Example</th><th>Used for</th></tr>
+    <tr><td>camelCase</td><td><code>userName</code>, <code>isLoggedIn</code></td><td>variables, functions (the default)</td></tr>
+    <tr><td>PascalCase</td><td><code>LoginPage</code>, <code>TestCase</code></td><td>classes, constructors, Page Objects</td></tr>
+    <tr><td>SCREAMING_SNAKE_CASE</td><td><code>BASE_URL</code>, <code>MAX_RETRIES</code></td><td>constants and config</td></tr>
+    <tr><td>snake_case</td><td><code>total_price</code></td><td>rare in JS; normal in Python/SQL</td></tr>
+    <tr><td>Hungarian</td><td><code>strName</code>, <code>bActive</code></td><td>legacy only — types replaced this</td></tr>
+  </table>
+
+  <h3>Comments</h3>
+  <pre><code>// single line — Ctrl + / in VS Code toggles it
+/* multi-line */
+/** JSDoc — shows as hover docs in the editor */
+var g = 10;</code></pre>
+  <div class="warn"><b>Trap:</b> block comments do not nest. <code>/* outer /* inner */ still code */</code> ends at the first <code>*/</code>, so <code>still code */</code> is parsed and throws.</div>
+</section>
+
+<!-- ============ 03 LITERALS ============ -->
+<section class="sec">
+  <h2>03 · Literals, types and <code>typeof</code> <span class="lab">labs 10–18</span></h2>
+
+  <h3>The eight types</h3>
+  <p>Seven primitives — <code>string</code>, <code>number</code>, <code>boolean</code>, <code>bigint</code>, <code>undefined</code>, <code>null</code>, <code>symbol</code> — plus <code>object</code>. Arrays, functions, dates and regexes are all objects. A variable has no type; the <b>value</b> does.</p>
+
+  <table>
+    <tr><th>Value</th><th><code>typeof</code></th><th>Note</th></tr>
+    <tr><td><code>"hi"</code>, <code>'hi'</code>, <code>`hi`</code></td><td><code>"string"</code></td><td>quotes make no difference</td></tr>
+    <tr><td><code>42</code>, <code>3.14</code>, <code>NaN</code>, <code>Infinity</code></td><td><code>"number"</code></td><td>one numeric type: 64-bit float</td></tr>
+    <tr><td><code>true</code> / <code>false</code></td><td><code>"boolean"</code></td><td></td></tr>
+    <tr><td><code>undefined</code></td><td><code>"undefined"</code></td><td>JS assigns it for you</td></tr>
+    <tr><td><code>null</code></td><td><code>"object"</code></td><td>historical bug, never fixed</td></tr>
+    <tr><td><code>10n</code></td><td><code>"bigint"</code></td><td>exact integers beyond 2<sup>53</sup></td></tr>
+    <tr><td><code>Symbol("id")</code></td><td><code>"symbol"</code></td><td>unique key</td></tr>
+    <tr><td><code>function(){}</code></td><td><code>"function"</code></td><td>callable object</td></tr>
+    <tr><td><code>[]</code>, <code>{}</code></td><td><code>"object"</code></td><td>use <code>Array.isArray()</code> for arrays</td></tr>
+  </table>
+
+  <h3><code>null</code> vs <code>undefined</code></h3>
+  <table>
+    <tr><th></th><th><code>undefined</code></th><th><code>null</code></th></tr>
+    <tr><td>Meaning</td><td>not assigned yet</td><td>intentionally empty</td></tr>
+    <tr><td>Who sets it</td><td>JavaScript</td><td>you (or an API)</td></tr>
+    <tr><td><code>typeof</code></td><td><code>"undefined"</code></td><td><code>"object"</code></td></tr>
+    <tr><td><code>==</code> with each other</td><td colspan="2"><code>true</code></td></tr>
+    <tr><td><code>===</code> with each other</td><td colspan="2"><code>false</code></td></tr>
+  </table>
+  <pre><code>let userName;                    // undefined, set by JS
+let profilePicture = null;       // empty on purpose
+console.log(userName, typeof userName);        // undefined undefined
+console.log(profilePicture, typeof profilePicture); // null object
+// a missing DOM attribute behaves like null:
+// await locator.getAttribute('href')  ->  null</code></pre>
+
+  <h3>Number literals</h3>
+  <table>
+    <tr><th>Form</th><th>Example</th><th>Value</th></tr>
+    <tr><td>decimal</td><td><code>42</code></td><td>42</td></tr>
+    <tr><td>binary <code>0b</code></td><td><code>0b1010</code></td><td>10</td></tr>
+    <tr><td>octal <code>0o</code></td><td><code>0o52</code></td><td>42</td></tr>
+    <tr><td>hex <code>0x</code></td><td><code>0x2A</code></td><td>42</td></tr>
+    <tr><td>exponent</td><td><code>1.5e3</code> / <code>1.5e-3</code></td><td>1500 / 0.0015</td></tr>
+    <tr><td>separators</td><td><code>1_000_000</code>, <code>0b1010_0001</code></td><td>1000000, 161</td></tr>
+  </table>
+  <pre><code>let h = 0xFF;             // 255, typeof "number"
+let million = 1_000_000;  // Number("1_000") is NaN — separators are code only
+let big = 123456789012345678901234567890n;   // bigint
+BigInt(42);               // 42n
+// 1n + 1                 TypeError: Cannot mix BigInt and other types
+// 2 ** 53 + 1            9007199254740992 — silently rounded
+Number.MAX_SAFE_INTEGER;  // 9007199254740991</code></pre>
+  <div class="warn"><b>Traps:</b> a legacy leading zero (<code>017</code>) means 15 in sloppy mode and is a SyntaxError in strict mode — always write <code>0o17</code>. <code>0.1 + 0.2</code> prints <code>0.30000000000000004</code> because every number is binary floating point.</div>
+
+  <h3>Infinity and NaN</h3>
+  <pre><code>1 / 0;        // Infinity        typeof Infinity -> "number"
+-1 / 0;       // -Infinity
+0 / 0;        // NaN
+"hello" * 2;  // NaN   (no exception is thrown)
+NaN === NaN;              // false  <- never equal, itself included
+Number.isNaN("hello");    // false  <- strict, no conversion
+isNaN("hello");           // true   <- global version converts first</code></pre>
+  <p><b>Why it matters in tests:</b> <code>Number("12 px")</code> is <code>NaN</code>, so an assertion comparing with it fails confusingly. Check with <code>Number.isNaN()</code> before asserting.</p>
+</section>
+
+<!-- ============ 04 OPERATORS ============ -->
+<section class="sec">
+  <h2>04 · Operators <span class="lab">labs 19–37</span></h2>
+
+  <h3>Expression anatomy</h3>
+  <p><code>let a = 10 + 3;</code> has two operators: <code>+</code> computes 13, <code>=</code> stores it. When a result surprises you, ask <b>what types are the operands</b> before anything else.</p>
+
+  <h3>Arithmetic</h3>
+  <table>
+    <tr><th>Op</th><th>Does</th><th>Example</th><th>Result</th></tr>
+    <tr><td><code>+</code></td><td>add / concatenate</td><td><code>1 + 2</code> / <code>"1" + 2</code></td><td><code>3</code> / <code>"12"</code></td></tr>
+    <tr><td><code>-</code></td><td>subtract</td><td><code>"5" - 1</code></td><td><code>4</code></td></tr>
+    <tr><td><code>*</code> <code>/</code></td><td>multiply / divide (always float)</td><td><code>10 / 3</code></td><td><code>3.3333333333333335</code></td></tr>
+    <tr><td><code>%</code></td><td>remainder, keeps the left sign</td><td><code>-7 % 2</code></td><td><code>-1</code></td></tr>
+    <tr><td><code>**</code></td><td>power</td><td><code>2 ** 3</code></td><td><code>8</code></td></tr>
+  </table>
+  <div class="warn"><b>Even/odd trap:</b> <code>n % 2 == 1</code> is wrong for negatives because <code>-7 % 2</code> is <code>-1</code>. Write <code>n % 2 !== 0</code>.</div>
+  <pre><code>Math.ceil(25 / 10);   // 3  — page counts
+Math.floor(10 / 3);   // 3
+Math.trunc(-4.7);     // -4 (towards zero), Math.floor(-4.7) is -5</code></pre>
+
+  <h3>Assignment</h3>
+  <pre><code>let x = 10;
+x = "PrrammodDutta";   // let allows a new value, even a new type
+x += 5;  x -= 5;  x *= 2;  x /= 4;  x %= 3;  x **= 2;   // compound forms
+// if (x = 5) assigns and is truthy — the classic bug; use if (x === 5)</code></pre>
+
+  <h3>Loose vs strict comparison</h3>
+  <table>
+    <tr><th>Expression</th><th>Result</th><th>Why</th></tr>
+    <tr><td><code>5 == "5"</code></td><td class="answer">true</td><td>string converted to number</td></tr>
+    <tr><td><code>5 === "5"</code></td><td class="answer">false</td><td>different types</td></tr>
+    <tr><td><code>5 != "5"</code></td><td class="answer">false</td><td>loose</td></tr>
+    <tr><td><code>5 !== "5"</code></td><td class="answer">true</td><td>strict</td></tr>
+    <tr><td><code>null == 0</code></td><td class="answer">false</td><td><code>==</code> does not convert null</td></tr>
+    <tr><td><code>null &gt;= 0</code></td><td class="answer">true</td><td>relational converts null to 0</td></tr>
+    <tr><td><code>NaN == NaN</code></td><td class="answer">false</td><td>NaN is never equal to anything</td></tr>
+  </table>
+  <pre><code>// The famous set — the coercion rule is "if one side is a number, convert the other"
+"" == 0      // true     ""  -> 0
+"0" == 0     // true     "0" -> 0
+"" == "0"    // false    both strings: compared as text  (transitivity broken)
+[] == false  // true     [] -> "" -> 0,  false -> 0
+"" === 0     // false    strict fixes all of the above</code></pre>
+  <div class="note"><b>Playwright note:</b> <code>expect(x).toBe(y)</code> is strict (it uses <code>Object.is</code>), so <code>expect("5").toBe(5)</code> fails. Text read from a page is a <i>string</i> — convert before comparing with a number.</div>
+
+  <h3>Logical operators</h3>
+  <table>
+    <tr><th><code>a</code></th><th><code>b</code></th><th><code>a &amp;&amp; b</code></th><th><code>a || b</code></th><th><code>!a</code></th></tr>
+    <tr><td>true</td><td>true</td><td>true</td><td>true</td><td>false</td></tr>
+    <tr><td>true</td><td>false</td><td>false</td><td>true</td><td>false</td></tr>
+    <tr><td>false</td><td>true</td><td>false</td><td>true</td><td>true</td></tr>
+    <tr><td>false</td><td>false</td><td>false</td><td>false</td><td>true</td></tr>
+  </table>
+  <pre><code>"a" && "b"      // "b"    returns an operand, not always a boolean
+null || "guest" // "guest"
+0 || 5          // 5      (0 is falsy)
+0 ?? 5          // 0      (?? only replaces null/undefined)
+// both short-circuit: the right side is not evaluated when unneeded</code></pre>
+  <p><b>Falsy values (only six):</b> <code>false</code>, <code>0</code>, <code>""</code>, <code>null</code>, <code>undefined</code>, <code>NaN</code>. Everything else — including <code>"0"</code>, <code>[]</code> and <code>{}</code> — is truthy.</p>
+
+  <h3>Strings and template literals</h3>
+  <pre><code>"Hello" + "World"        // HelloWorld  (+ joins, no space)
+console.log("HELLO", "Prrammod");   // HELLO Prrammod (comma adds a space)
+1 + 2 + "Hello"          // "3Hello"   left to right
+"Hello" + 1 + 2          // "Hello12"
+`Hello ${1 + 2}`         // "Hello 3"  template literal avoids the surprise
+`${baseUrl}/login`       // paths, URLs, log lines
+`line 1
+line 2`                  // spans lines without \n</code></pre>
+
+  <h3>Ternary</h3>
+  <pre><code>let verdict = actual === expected ? "PASS" : "FAIL";
+let mode    = isCI ? "headless" : "headed";
+let url     = environment === "prod"
+    ? "https://api.example.com"
+    : "https://staging-api.example.com";
+let redundant = condition ? true : false;   // just write `condition`
+
+// flat chain reads like if / else if / else
+let category =
+    code &lt; 300 ? "Success" :
+    code &lt; 400 ? "Redirect" :
+    code &lt; 500 ? "Client Error" : "Server Error";</code></pre>
+  <div class="warn"><b>Boundary rule:</b> <code>age &gt; 18 ? "Yes" : "No"</code> says No for an 18-year-old. If 18 should pass, write <code>age &gt;= 18</code>. That is boundary value analysis in one character.</div>
+  <p>Nested-in-the-middle ternaries (<code>a ? (b ? x : y) : z</code>) are legal but hard to read; past three branches use <code>if/else</code> (ESLint <code>no-nested-ternary</code>).</p>
+
+  <h3><code>typeof</code> as an operator</h3>
+  <pre><code>typeof "hello"      // "string"
+typeof typeof 123   // "string"  — the inner call already returned "number"
+typeof notDeclared  // "undefined" — no error for an undeclared name
+// typeof x === "number"   ← compares against a string, because that is what it returns</code></pre>
+</section>
+
+<!-- ============ 05 INCREMENT ============ -->
+<section class="sec">
+  <h2>05 · Increment, decrement, nullish <span class="lab">labs 38–45</span></h2>
+
+  <table>
+    <tr><th>Code (start <code>a = 10</code>)</th><th><code>b</code></th><th><code>a</code> after</th></tr>
+    <tr><td><code>let b = ++a;</code> pre — change, then use</td><td>11</td><td>11</td></tr>
+    <tr><td><code>let b = a++;</code> post — use, then change</td><td>10</td><td>11</td></tr>
+    <tr><td><code>let b = --a;</code></td><td>9</td><td>9</td></tr>
+    <tr><td><code>let b = a--;</code></td><td>10</td><td>9</td></tr>
+  </table>
+  <pre><code>let a = 10;
+++a + a;          // 22   (11 + 11)      a = 11
+a = 10; ++a + a + a++;   // 33   (11 + 11 + 11)  a = 12
+let i = 1; i++ + ++i;    //  4   (1 + 3)     i = 3</code></pre>
+  <div class="note"><b>Method:</b> trace left to right in two columns — the value each operand <i>uses</i>, and the variable <i>after</i> that step. Guessing fails; tracing never does. Every <code>++</code> updates the variable immediately, so operands further right see the new value.</div>
+  <div class="warn"><b>Traps:</b> <code>5++</code> is a SyntaxError (only variables change); <code>++</code> on a <code>const</code> throws <code>TypeError</code>; <code>"5"++</code> converts to the number <code>6</code>.</div>
+
+  <h3><code>??</code> versus <code>||</code></h3>
+  <table>
+    <tr><th>value</th><th><code>value ?? "x"</code></th><th><code>value || "x"</code></th></tr>
+    <tr><td><code>null</code></td><td>"x"</td><td>"x"</td></tr>
+    <tr><td><code>undefined</code></td><td>"x"</td><td>"x"</td></tr>
+    <tr><td><code>0</code></td><td><b>0</b></td><td>"x"</td></tr>
+    <tr><td><code>""</code></td><td><b>""</b></td><td>"x"</td></tr>
+    <tr><td><code>false</code></td><td><b>false</b></td><td>"x"</td></tr>
+  </table>
+  <pre><code>let api_response = null;
+let data = api_response ?? "{}";     // "{}"
+let timeout; timeout ??= 30_000;     // assign only if null/undefined
+// a || b ?? c   ->  SyntaxError: use (a || b) ?? c</code></pre>
+</section>
+
+<!-- ============ 06 CONDITIONALS ============ -->
+<section class="sec">
+  <h2>06 · <code>if/else</code> and <code>switch</code> <span class="lab">labs 46–58</span></h2>
+
+  <h3>Branches</h3>
+  <pre><code>if (age &gt; 18) {
+    console.log("Goa");
+} else {
+    console.log("No Goa");
+}
+
+// nested / else-if ladder — order matters, the first true branch wins
+if (score &gt; 100 || score &lt; 0)      console.log("Invalid score");
+else if (score &gt; 90)                console.log("A");
+else if (score &gt; 80 &amp;&amp; score &lt;= 90) console.log("B");
+else                                console.log("F");</code></pre>
+  <div class="warn"><b>Boundary bug in lab 49:</b> the first check is <code>score &gt; 90</code>, not <code>&gt;= 90</code>, so 90 falls into band B. Always test the edges: 0, 49, 50, 60, 70, 80, 90, 100.</div>
+
+  <h3><code>switch</code></h3>
+  <pre><code>switch (day) {
+    case 1:  console.log("Mon"); break;
+    case 2:  console.log("Tue"); break;
+    default: console.log("unknown");
+}
+// without break, execution falls through into the next case (lab 51 prints 7 lines)
+// grouped cases share one body (lab 54):
+switch (browser) {
+  case "Chrome": case "Edge": case "Brave": case "Opera":
+      console.log("Chromium project"); break;
+  case "Firefox": console.log("Mozilla"); break;
+}
+// switch(true) turns the cases into conditions (lab 56)
+switch (true) {
+  case (score &gt;= 95): console.log("Outstanding"); break;
+  case (score &gt;= 85): console.log("Excellent");   break;
+}</code></pre>
+  <table>
+    <tr><th>Rule</th><th>Detail</th></tr>
+    <tr><td>Comparison is strict</td><td><code>switch</code> uses <code>===</code>: <code>0</code> matches <code>case 0</code>, never <code>case false</code> (lab 58)</td></tr>
+    <tr><td>Duplicates</td><td>Two identical <code>case</code> labels are legal; the first match runs (lab 57)</td></tr>
+    <tr><td><code>default</code> position</td><td>Anywhere, but it still runs last when nothing matches</td></tr>
+    <tr><td>Variables in a case</td><td><code>let</code> inside a case is scoped to the whole switch block — wrap the case body in <code>{ }</code> if you declare the same name twice</td></tr>
+  </table>
+  <div class="qa"><b>Choose:</b> <code>switch</code> for one value against a fixed list (status codes, browser names); <code>if/else</code> for ranges and combined conditions; ternary when both branches only produce a value.</div>
+</section>
+
+<!-- ============ 07 INPUT & LOOPS ============ -->
+<section class="sec">
+  <h2>07 · Input, loops and patterns <span class="lab">labs 59–77</span></h2>
+
+  <h3>Reading input</h3>
+  <pre><code>// 1. browser only (ReferenceError in Node)
+let num = Number(prompt("Enter a number:"));
+
+// 2. Node, callback style
+const readline = require('readline');
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+rl.question("Enter a number: ", (input) =&gt; { console.log(Number(input)); rl.close(); });
+
+// 3. prompt-sync (needs `npm i prompt-sync`)
+const prompt = require("prompt-sync")();
+let n = Number(prompt("Enter a number"));
+
+// 4. no dependency: read stdin until EOF
+const data = require('fs').readFileSync(0, 'utf8');</code></pre>
+
+  <h3>The three loops</h3>
+  <pre><code>for (let i = 0; i &lt; 10; i++) { }        // init; condition; update — count known
+let i = 0; while (i &lt; 10) { i++; }     // condition first — count unknown
+do { } while (retry &lt; 3);              // body runs at least once
+while (true) { if (age &gt; 10) break; }  // break exits the loop</code></pre>
+  <table>
+    <tr><th>Situation</th><th>Use</th></tr>
+    <tr><td>Known number of iterations, an index is needed</td><td><code>for</code></td></tr>
+    <tr><td>Repeat until a condition changes (retries, polling)</td><td><code>while</code></td></tr>
+    <tr><td>Body must run at least once (menu, retry)</td><td><code>do…while</code></td></tr>
+    <tr><td>Every item of a collection</td><td><code>for…of</code> / <code>forEach</code></td></tr>
+  </table>
+  <pre><code>// do-while vs while with the same false condition (lab 75)
+let a = 10;
+while (a &lt; 10) { console.log(a); }   // prints nothing
+do { console.log(a); a++; } while (a &lt; 10);   // prints 10 once
+
+// no condition at all (lab 68) -> infinite loop; Ctrl+C to stop
+for (let p = 0; ; p++) { }
+
+// a loop whose condition is false from the start runs 0 times (lab 77)
+let count = 0;
+for (let i = 5; i &lt; 5; i++) count++;
+count;   // 0</code></pre>
+  <pre><code>// nested loop: 3 x 3 = 9 lines (lab 76)
+for (let i = 0; i &lt; 3; i++)
+  for (let j = 0; j &lt; 3; j++)
+    console.log(i, j);</code></pre>
+</section>
+
+<!-- ============ 08 ARRAYS ============ -->
+<section class="sec">
+  <h2>08 · Arrays <span class="lab">labs 78–100</span></h2>
+
+  <h3>Create, read, write</h3>
+  <pre><code>let browsers = ["chrome", "firefox", "webkit"];
+browsers[0];        // "chrome"      (0-based)
+browsers.at(-1);    // "webkit"      negative counts from the end
+browsers[9];        // undefined
+browsers.length;    // 3
+
+let empty = new Array(3);        // 3 holes, NOT [3]
+let three = new Array(1, 2, 3);  // [1,2,3]
+Array.of(10, 20);                // [10,20]  — no length trap
+Array.from("hello");             // ["h","e","l","l","o"]
+Array.isArray([]);               // true
+typeof [];                       // "object"  ← why isArray exists</code></pre>
+
+  <h3>Mutating methods</h3>
+  <table>
+    <tr><th>Call on <code>[1,2,3]</code></th><th>Result</th><th>Array after</th></tr>
+    <tr><td><code>push(4)</code></td><td>new length</td><td><code>[1,2,3,4]</code></td></tr>
+    <tr><td><code>pop()</code></td><td>4</td><td><code>[1,2,3]</code></td></tr>
+    <tr><td><code>unshift(0)</code></td><td>new length</td><td><code>[0,1,2,3]</code></td></tr>
+    <tr><td><code>shift()</code></td><td>0</td><td><code>[1,2,3]</code></td></tr>
+    <tr><td><code>splice(2,1)</code></td><td>removed items</td><td>removes 1 at index 2</td></tr>
+    <tr><td><code>splice(2,0,99)</code></td><td>[]</td><td>inserts 99 at index 2</td></tr>
+    <tr><td><code>splice(1,2,10,20)</code></td><td>replaced items</td><td>removes 2, inserts 2</td></tr>
+  </table>
+  <p class="fine"><code>push/pop</code> work at the end; <code>unshift/shift</code> at the start; <code>splice(start, deleteCount, …items)</code> anywhere.</p>
+
+  <h3>Search</h3>
+  <pre><code>["pass","fail","pass"].indexOf("fail");       // 1
+["pass","fail"].indexOf("skip");              // -1  (not found)
+["pass","fail"].includes("error");            // true / false
+[10,25,30,45].find(n =&gt; n &gt; 20);              // 25   value
+[10,25,30,45].findIndex(n =&gt; n &gt; 20);         // 1    index
+[10,25,30,45].findLast(n =&gt; n &gt; 20);          // 45
+[10,25,30,45].findLastIndex(n =&gt; n &gt; 20);     // 3</code></pre>
+
+  <h3>Iterate</h3>
+  <pre><code>let tests = ["login", "checkout", "search"];
+for (let i = 0; i &lt; tests.length; i++) console.log(i, tests[i]);   // index + value
+for (let t of tests) console.log(t);                               // of -> VALUE
+for (let i in tests) console.log(i);                               // in -> INDEX (string!)
+tests.forEach((t, i) =&gt; console.log(`${i}: ${t}`));                // no return value
+for (let [i, t] of tests.entries()) console.log(i, t);             // index + value</code></pre>
+
+  <h3>Transform</h3>
+  <pre><code>let scores = [45, 82, 91, 60, 73];
+scores.map(s =&gt; s &gt; 70 ? "Pass" : "Fail");   // new array, same length
+scores.filter(s =&gt; s &gt;= 70);                 // [82,91,73]
+scores.reduce((a, b) =&gt; a + b, 0);           // 351
+[80,90,85].every(s =&gt; s &gt;= 70);              // true  — ALL must pass
+[80,60,85].some(s =&gt; s &lt; 70);                // true  — AT LEAST ONE</code></pre>
+  <div class="note"><b>map ≠ forEach:</b> <code>map</code> returns a new array, <code>forEach</code> returns <code>undefined</code>. <code>for (let x in array)</code> gives you the <i>indexes</i> as strings — a common interview mistake.</div>
+
+  <h3>Sorting (the trap)</h3>
+  <pre><code>["banana","apple","cherry"].sort();     // alphabetical by default
+[10,1,21,2].sort();                     // [1,10,2,21]  ← lexicographic, NOT numeric
+[11,-11].sort();                        // [-11,11]     ("-" is 45, "1" is 49)
+["banana","Apple"].sort();              // ["Apple","banana"] uppercase first
+
+[10,1,21,2].sort((a,b) =&gt; a - b);       // [1,2,10,21]  ascending
+[10,1,21,2].sort((a,b) =&gt; b - a);       // descending
+["a","B"].sort((a,b) =&gt; a.localeCompare(b));   // human order, case aware</code></pre>
+  <p class="fine">Default <code>sort()</code> converts to strings and compares character codes: digits 48–57, uppercase 65–90, lowercase 97–122. <code>sort</code> mutates the original array.</p>
+
+  <h3>Slice, concat, copy, destructure</h3>
+  <pre><code>let arr = [1,2,3,4,5];
+arr.slice(1,3);     // [2,3]  end exclusive, does not mutate
+arr.slice(2);       // [3,4,5]
+arr.slice(-2);      // [4,5]
+arr.slice(-3,-5);   // []  — start 2 is after end 0; slice never reverses
+
+[1,2].concat([3,4]);   // [1,2,3,4]
+[...a, ...b];          // same thing, modern way
+
+let copyShallow = [...arr];     // new array, one level
+arr.slice();                    // also a shallow copy
+let alias = arr;                // NOT a copy — same array
+
+let [first, second] = [10,20];
+let [a, b, ...rest] = [1,2,3,4,5];   // rest = [3,4,5]
+let [, , third] = [10,20,30];        // 30
+[p, q] = [q, p];                     // swap in one line</code></pre>
+  <div class="warn"><b>Two lab comments to correct:</b> in lab 97 <code>let deep_copy_array = original;</code> is <i>not</i> a deep copy — it is another name for the same array. For a real deep copy use <code>structuredClone(original)</code>. In lab 100 the swap needs <code>[p,q] = [q,p]</code> as a statement (declare <code>let p=1,q=2;</code> first) — otherwise it is parsed as an array expression.</div>
+  <div class="qa"><b>For testers:</b> never mutate shared test data. <code>const copy = [...base]</code> for a flat array, <code>structuredClone(base)</code> when it holds objects.</div>
+</section>
+
+<!-- ============ 09 FUNCTIONS ============ -->
+<section class="sec">
+  <h2>09 · Functions <span class="lab">labs 101–116</span></h2>
+
+  <table>
+    <tr><th>Type</th><th>Shape</th><th>Returns</th></tr>
+    <tr><td>1</td><td>no params, no return</td><td><code>undefined</code></td></tr>
+    <tr><td>2</td><td>no params, returns a value</td><td>that value</td></tr>
+    <tr><td>3</td><td>params, no return</td><td><code>undefined</code></td></tr>
+    <tr><td>4</td><td>params and a return</td><td>that value</td></tr>
+  </table>
+  <pre><code>function greet() { console.log("Hi"); }          // type 1
+let msg = greet();                              // undefined
+
+function sum(a, b) { return a + b; }            // type 4
+sum(4, 5);                                      // 9
+
+const greet1 = function (name) { return `Hi ${name}`; };   // expression, anonymous
+const greet2 = (name) =&gt; `Hi ${name}`;                     // arrow, implicit return
+const double = a =&gt; a * 2;
+const result = (score) =&gt; { if (score &gt; 70) return "Pass"; return "Fail"; };
+
+(function () { console.log("runs immediately"); })();      // IIFE
+(() =&gt; { console.log("setup complete"); })();
+
+function hasError(...codes) { return codes.some(c =&gt; c &gt;= 400); }  // rest
+hasError(...[200, 201, 404]);                                        // spread</code></pre>
+  <p><b>Nothing returned = <code>undefined</code>.</b> A missing <code>return</code> is not an error, which is why <code>let x = greet()</code> silently gives <code>undefined</code>.</p>
+  <div class="warn"><b>Arrow vs function, in one line:</b> an arrow has no own <code>this</code>, cannot be a constructor, and has no <code>arguments</code> object. Use a normal function for object methods and class methods, an arrow for callbacks.</div>
+</section>
+
+<!-- ============ 10 SCOPE ============ -->
+<section class="sec">
+  <h2>10 · <code>var</code>/<code>let</code>/<code>const</code>, hoisting, TDZ <span class="lab">labs 117–127</span></h2>
+
+  <h3>Scope</h3>
+  <pre><code>var a = 10;
+function printHello() {
+    var a = 20;              // function scoped
+    if (true) { var a = 30; } // SAME variable — var ignores the block
+    console.log(a);           // 30
+}
+
+let b = 20;                   // global
+function f() {
+    let b = 30;               // block scoped, shadowing
+    if (true) { let b = 5; console.log(b); }   // 5
+    console.log(b);           // 30
+}</code></pre>
+
+  <h3>Hoisting and the temporal dead zone</h3>
+  <table>
+    <tr><th>Declaration</th><th>What is hoisted</th><th>Before its line</th></tr>
+    <tr><td><code>var x</code></td><td>the name, initialised to <code>undefined</code></td><td>reading gives <code>undefined</code></td></tr>
+    <tr><td><code>let x</code> / <code>const x</code></td><td>the name, but uninitialised (TDZ)</td><td><code>ReferenceError: Cannot access 'x' before initialization</code></td></tr>
+    <tr><td><code>function f(){}</code></td><td>the whole function body</td><td>callable before its line</td></tr>
+    <tr><td><code>class C {}</code></td><td>the name, uninitialised (TDZ)</td><td><code>ReferenceError</code></td></tr>
+  </table>
+  <pre><code>console.log(greeting);   // undefined  (var)
+var greeting = "Hello";
+console.log(greeting);   // Hello
+
+// console.log(greeting2);  // ReferenceError (let, TDZ)
+let greeting2 = "Hello";
+
+var testName = "Login";
+var testName = "Signup";   // allowed: var re-declares
+// let testName = "x";     // SyntaxError: already declared</code></pre>
+  <div class="warn"><b>TDZ nuance (lab 127):</b> <code>typeof undeclaredName</code> is <code>"undefined"</code> and does not throw — but <code>typeof x</code> before <code>let x</code> in the same scope throws <code>ReferenceError</code>. The TDZ check happens before <code>typeof</code> can run.</div>
+</section>
+
+<!-- ============ 11 CLOSURES ============ -->
+<section class="sec">
+  <h2>11 · Closures <span class="lab">lab 128</span></h2>
+  <pre><code>function startBrowser() {
+    let name = "edge";                 // lives as long as the returned function
+    function installBrowser() {
+        console.log(name);
+    }
+    return installBrowser;
+}
+const runTc = startBrowser();
+runTc();          // "edge" — the outer call has already finished</code></pre>
+  <p>A closure is a function plus the scope it was created in. The inner function keeps <code>name</code> alive after <code>startBrowser</code> returns. That is how retry counters, memoisation and every Playwright fixture work.</p>
+  <div class="qa"><b>Interview line:</b> a closure lets a function remember variables from where it was defined, not where it is called.</div>
+</section>
+
+<!-- ============ 12 STRINGS ============ -->
+<section class="sec">
+  <h2>12 · Strings <span class="lab">labs 129–131</span></h2>
+  <pre><code>let url = "https://app.vwo.com";   // double quotes
+let status = 'pass';               // single quotes — identical string
+let msg = `Test done in ${320}ms`; // backticks: expressions + multiline
+String(200);      // "200"
+String(null);     // "null"
+String([1,2]);    // "1,2"</code></pre>
+
+  <table>
+    <tr><th>Need</th><th>Call</th><th>On <code>"Hello, World!"</code></th></tr>
+    <tr><td>Length</td><td><code>.length</code></td><td>13</td></tr>
+    <tr><td>Character</td><td><code>str[0]</code> / <code>str.at(-1)</code></td><td><code>"H"</code> / <code>"!"</code></td></tr>
+    <tr><td>Safe character</td><td><code>str.charAt(0)</code></td><td><code>"H"</code>; <code>charAt(-1)</code> is <code>""</code></td></tr>
+    <tr><td>Character code</td><td><code>str.charCodeAt(0)</code></td><td>72</td></tr>
+    <tr><td>Contains</td><td><code>url.includes("staging")</code></td><td>boolean</td></tr>
+    <tr><td>Prefix / suffix</td><td><code>.startsWith("https")</code> / <code>.endsWith("true")</code></td><td>boolean</td></tr>
+    <tr><td>Position</td><td><code>.indexOf("a")</code> / <code>.lastIndexOf("a")</code></td><td>index or <code>-1</code></td></tr>
+    <tr><td>Change case</td><td><code>.toUpperCase()</code> / <code>.toLowerCase()</code></td><td>new string</td></tr>
+    <tr><td>Trim / split / replace</td><td><code>.trim()</code>, <code>.split(",")</code>, <code>.replace("a","b")</code></td><td>—</td></tr>
+    <tr><td>Extract</td><td><code>.slice(0,5)</code>, <code>.substring(0,5)</code></td><td>—</td></tr>
+  </table>
+  <div class="note"><b><code>charAt</code> vs <code>at</code>:</b> <code>"abc".charAt(-1)</code> is <code>""</code>, <code>"abc".at(-1)</code> is <code>"c"</code>; <code>at(5)</code> is <code>undefined</code>, <code>charAt(5)</code> is <code>""</code>. Strings are immutable — every method returns a new string.</div>
+</section>
+
+<!-- ============ 13 OBJECTS ============ -->
+<section class="sec">
+  <h2>13 · Objects and copying <span class="lab">labs 132–139</span></h2>
+  <pre><code>const user = { name: "Pramod", age: 30, printName() { return this.name; } };
+user.name;         // dot
+user["age"];       // bracket — needed for dynamic keys
+user.city = "NYC"; // add
+user.age = 31;     // modify
+delete user.city;  // remove
+
+// keys are case sensitive
+let a = { status: "pass", Status: "fail" };   // two different keys</code></pre>
+
+  <h3>Reference vs value</h3>
+  <table>
+    <tr><th>Code</th><th>New object?</th><th>Change <code>b</code>, does <code>a</code> change?</th></tr>
+    <tr><td><code>let b = a;</code></td><td>no — one object, two names</td><td>yes</td></tr>
+    <tr><td><code>let b = { ...a };</code></td><td>yes, shallow</td><td>no for top-level keys; <b>yes</b> for nested objects</td></tr>
+    <tr><td><code>let b = structuredClone(a);</code></td><td>yes, deep</td><td>no, at any depth</td></tr>
+  </table>
+  <pre><code>let a = { status: "pass" };
+let b = a;
+b.status = "fail";
+console.log(a.status);       // fail — primitives copy the value, objects copy the reference
+
+let u1 = { name: "Pramod", address: { city: "Delhi" } };
+let s  = { ...u1 };
+s.name = "Amit"; s.address.city = "Mumbai";
+console.log(u1.name);         // Pramod   (top level safe)
+console.log(u1.address.city); // Mumbai   (inner object shared!)
+
+let d = structuredClone(u1);   // everything new
+// Object.assign({}, u1) is another shallow copy; JSON.parse(JSON.stringify(u1)) is a lossy deep copy</code></pre>
+  <div class="warn"><b>Test-suite consequence:</b> if several tests share one data object and one test "just tweaks" it, every later test sees the tweak and passes or fails by run order. Give each test its own copy.</div>
+  <p class="fine"><code>const</code> stops reassignment, not mutation: <code>const arr = []; arr.push(1)</code> is fine. It only prevents pointing the name at a different object.</p>
+</section>
+
+<!-- ============ 14 2D ============ -->
+<section class="sec">
+  <h2>14 · 2D arrays and patterns <span class="lab">labs 140–146</span></h2>
+  <pre><code>let grid = [
+    [10, 20, 30],
+    [40, 50, 60],
+    [70, 80, 90]
+];
+grid[0][0];        // 10   [row][column]
+grid.length;       // 3    rows
+grid[0].length;    // 3    columns
+grid[0][0] = 99;   // mutate one cell</code></pre>
+  <pre><code>// print a matrix
+for (let i = 0; i &lt; grid.length; i++) {
+    for (let j = 0; j &lt; grid[i].length; j++) {
+        process.stdout.write(grid[i][j] + " ");
+    }
+    console.log("");
+}
+
+// row totals with map + reduce
+let scores = [[85,90,78], [60,45,70], [95,88,92]];
+scores.map(row =&gt; row.reduce((a, b) =&gt; a + b));   // [253, 175, 275]</code></pre>
+  <table>
+    <tr><th>Pattern (n = 3)</th><th>Loops</th><th>Output</th></tr>
+    <tr><td>Right triangle</td><td><code>for j &lt;= i</code></td><td><code>*</code> / <code>**</code> / <code>***</code></td></tr>
+    <tr><td>Inverted triangle</td><td><code>for i = n; i &gt;= 1; i--</code></td><td><code>***</code> / <code>**</code> / <code>*</code></td></tr>
+    <tr><td>Pyramid</td><td>spaces <code>n-i</code>, stars <code>2*i-1</code></td><td><code>&nbsp;&nbsp;*</code> / <code>&nbsp;***</code> / <code>*****</code></td></tr>
+  </table>
+  <pre><code>// pyramid — the two-loop rule: spaces shrink, stars grow by 2
+for (let i = 1; i &lt;= n; i++) {
+    let row = " ".repeat(n - i) + "*".repeat(2 * i - 1);
+    console.log(row);
+}</code></pre>
+</section>
+
+<!-- ============ 15 CALLBACKS ============ -->
+<section class="sec">
+  <h2>15 · Callbacks <span class="lab">labs 147–154</span></h2>
+  <pre><code>function placeOrder(item, callback) {
+    console.log("Order placed", item);
+    callback();
+}
+placeOrder("Burger", () =&gt; console.log("Ready!"));
+
+// a callback that returns a value
+function calculate(a, b, op) { return op(a, b); }
+calculate(10, 5, (x, y) =&gt; x + y);      // 15</code></pre>
+
+  <h3>Sync vs async</h3>
+  <pre><code>["Pass","Fail"].forEach(r =&gt; console.log(r));   // synchronous: finishes first
+
+console.log("Test 1 started");
+setTimeout(() =&gt; console.log("Test 2 started"), 5000);
+console.log("Test 3 started");
+// Output: Test 1, Test 3, Test 2 — the timer runs after the stack empties</code></pre>
+  <p><code>setTimeout</code>, event handlers and Playwright's <code>test()</code> all take callbacks. Pass a function without calling it: <code>setTimeout(fn, 100)</code>, not <code>setTimeout(fn(), 100)</code>.</p>
+
+  <h3>Callback hell</h3>
+  <pre><code>openBrowser(() =&gt; {
+    goToLoginPage(() =&gt; {
+        enterCredentials(() =&gt; {
+            clickLogin(() =&gt; {
+                console.log("Test complete");
+            });
+        });
+    });
+});
+// Deep nesting of error-first callbacks is the "pyramid of doom" —
+// Promises (Part 16) and async/await (Part 17) flatten it.</code></pre>
+  <div class="qa"><b>Why the nesting is bad:</b> no return values, error handling repeated at every level, indentation grows with each step, and there is no easy way to run two branches in parallel.</div>
+</section>
+
+<!-- ============ 16 PROMISES ============ -->
+<section class="sec">
+  <h2>16 · Promises <span class="lab">labs 155–161</span></h2>
+  <pre><code>let apiCall = new Promise((resolve, reject) =&gt; {
+    resolve({ status: 200, body: "User Data" });    // or reject("Assertion Failed")
+});
+
+apiCall
+    .then(res =&gt; console.log(res))
+    .catch(err =&gt; console.log(err))
+    .finally(() =&gt; console.log("cleanup"));</code></pre>
+  <table>
+    <tr><th>State</th><th>Meaning</th></tr>
+    <tr><td>pending</td><td>not settled yet</td></tr>
+    <tr><td>fulfilled</td><td><code>resolve(value)</code> was called</td></tr>
+    <tr><td>rejected</td><td><code>reject(reason)</code> was called, or the executor threw</td></tr>
+  </table>
+  <p>A promise settles <b>once</b>; later <code>resolve</code>/<code>reject</code> calls are ignored. <code>.catch</code> also catches an error thrown inside an earlier <code>.then</code>.</p>
+
+  <h3>Chaining replaces nesting</h3>
+  <pre><code>openBrowser()
+    .then(msg =&gt; { console.log("Step 1", msg); return goToLogin(); })   // returning a promise flattens it
+    .then(msg =&gt; { console.log("Step 2", msg); return enterCredentials(); })
+    .then(msg =&gt; { console.log("Step 3", msg); return clickLogin(); })
+    .catch(err =&gt; console.log("Error:", err))
+    .finally(() =&gt; console.log("Done"));</code></pre>
+
+  <h3>Combinators</h3>
+  <table>
+    <tr><th>Call</th><th>Resolves with</th><th>On one failure</th><th>Use when</th></tr>
+    <tr><td><code>Promise.all([...])</code></td><td>array of values, in order</td><td>rejects immediately (fail-fast)</td><td>all steps must pass</td></tr>
+    <tr><td><code>Promise.allSettled([...])</code></td><td>array of <code>{status, value|reason}</code></td><td>always fulfils</td><td>report all results</td></tr>
+    <tr><td><code>Promise.race([...])</code></td><td>the first to settle (fulfil or reject)</td><td>first settle wins</td><td>timeouts</td></tr>
+    <tr><td><code>Promise.any([...])</code></td><td>the first to fulfil</td><td>rejects only if all reject</td><td>mirror servers</td></tr>
+  </table>
+  <pre><code>Promise.all([checkAuth, checkDB, checkCache])
+    .then(results =&gt; console.log("All checks:", results));
+
+Promise.all([Promise.resolve("OK"), Promise.reject("DB DOWN"), Promise.resolve("OK")])
+    .catch(err =&gt; console.log("Failed:", err));       // "DB DOWN" — the first two never reported
+
+Promise.allSettled([Promise.resolve("A"), Promise.reject("B")])
+    .then(rs =&gt; rs.forEach(r =&gt; console.log(r.status, r.value ?? r.reason)));
+// fulfilled A / rejected B</code></pre>
+  <div class="warn"><b>Spot the bug in lab 160:</b> <code>setTimeout(fn), 100</code> closes the call early, so the <code>100</code> is a stray expression and both timers are 0 ms — the "fast vs slow server" race no longer demonstrates anything. It should be <code>setTimeout(fn, 100)</code>.</div>
+</section>
+
+<!-- ============ 17 ASYNC ============ -->
+<section class="sec">
+  <h2>17 · <code>async</code> / <code>await</code> <span class="lab">labs 162–171</span></h2>
+  <pre><code>async function runAPIRequest() {          // async ALWAYS returns a Promise
+    let response = await apiRequest();    // await unwraps the promise
+    console.log(response.status);         // 200
+}
+runAPIRequest();
+
+async function testAPI() {
+    try {
+        let r = await Promise.reject("503 Service Unavailable");
+    } catch (e) {
+        console.log("Error", e);          // rejected promise -> catch
+    } finally {
+        console.log("cleanup");
+    }
+}</code></pre>
+
+  <h3>Sequential vs parallel</h3>
+  <pre><code>// sequential: ~3000 ms — each await waits for the previous
+let r1 = await apiCall("Login");
+let r2 = await apiCall("Dashboard");
+let r3 = await apiCall("Report");
+
+// parallel: ~1000 ms — start all three, then wait
+let [a, b, c] = await Promise.all([
+    apiCall("Auth"), apiCall("User"), apiCall("Payment")
+]);</code></pre>
+  <div class="note"><b>Rule:</b> <code>await</code> inside a loop is sequential. For independent work, build the promises first and <code>await Promise.all()</code> — that is the single biggest speed-up in a Playwright suite.</div>
+
+  <h3>Event-loop ordering (lab 171)</h3>
+  <pre><code>console.log("A");
+async function test() {
+    console.log("B");
+    await Promise.resolve();   // suspends; the rest becomes a microtask
+    console.log("C");
+}
+test();
+console.log("D");
+// Output: A, B, D, C</code></pre>
+  <p>Synchronous lines run first (A, B), <code>await</code> queues the remainder as a microtask, the main script continues (D), and only then the microtask runs (C).</p>
+
+  <h3>Retry pattern (lab 168)</h3>
+  <pre><code>function createFlakyAPI(successOnAttempt) {
+    let attempt = 0;
+    return () =&gt; {
+        attempt++;
+        return attempt &lt; successOnAttempt
+            ? Promise.reject(`Attempt ${attempt}: failed`)
+            : Promise.resolve(`Attempt ${attempt}: success`);
+    };
+}
+let call = createFlakyAPI(2);
+console.log(await call());   // wait — this file must be async to use await
+// first call rejects, second resolves: that is the flaky-API retry loop</code></pre>
+  <div class="warn"><b>Two bugs worth noting in that lab:</b> <code>await</code> was used in a non-async function (SyntaxError), and <code>let s = await createFlakyAPIs(1)</code> awaits a <i>function</i> — awaiting a non-promise just returns it, so <code>s</code> is the function; <code>console.log(s())</code> then prints a pending/resolved <b>Promise object</b>. Write <code>console.log(await s())</code>.</div>
+  <p class="fine">Also in lab 163: <code>new Promise.resolve("abc")</code> throws <code>TypeError: Promise.resolve is not a constructor</code> — use <code>Promise.resolve("abc")</code>.</p>
+
+  <h3>In Playwright</h3>
+  <pre><code>test('uses await', async ({ page }) =&gt; {
+    await page.goto('https://playwright.dev/');   // every browser call is a promise
+    await expect(page).toHaveTitle(/Playwright/);
+});</code></pre>
+</section>
+
+<!-- ============ 18 MODULES ============ -->
+<section class="sec">
+  <h2>18 · Modules: <code>import</code> / <code>export</code> <span class="lab">labs 172–174</span></h2>
+  <pre><code>// utils.js — named exports (many per file)
+export let BASE_URL = "https://api.example.com";
+export function formatTestName(name) { return "TC_" + name.toUpperCase(); }
+
+// logger.js — one default plus named
+export default function log(msg) { console.log("[LOG] " + msg); }
+export function logBetter(msg) { console.log("[LOGS] " + msg); }
+
+// consumer
+import { BASE_URL, formatTestName } from "./utils.js";
+import { BASE_URL as bul } from "./testutils.js";        // rename on import
+import log, { logBetter } from "./logs/logger.js";       // default + named
+log("Starting"); logBetter("Starting the TC");</code></pre>
+  <table>
+    <tr><th></th><th>Named</th><th>Default</th></tr>
+    <tr><td>Count per file</td><td>many</td><td>exactly one</td></tr>
+    <tr><td>Braces on import</td><td>yes</td><td>no</td></tr>
+    <tr><td>Name must match</td><td>yes (or use <code>as</code>)</td><td>no, you choose</td></tr>
+  </table>
+  <div class="warn"><b>CommonJS vs ES modules:</b> <code>require()</code> / <code>module.exports</code> is CJS; <code>import</code> / <code>export</code> is ESM. ESM needs either a <code>.mjs</code> extension, <code>"type": "module"</code> in the nearest <code>package.json</code>, or a Node version with module detection (22.7+/24, which is why these labs run). Keep the <code>.js</code> extension in relative imports. Lab 173 imports <code>./testutil.js</code> but the file is <code>testutils.js</code> — a one-letter typo is a <code>ERR_MODULE_NOT_FOUND</code>.</div>
+</section>
+
+<!-- ============ 19 CLASSES ============ -->
+<section class="sec">
+  <h2>19 · Classes and constructors <span class="lab">labs 175–187</span></h2>
+  <pre><code>class TestCase {
+    #apiKey;                                  // private field
+
+    constructor(name, status, priority) {     // runs on every `new`
+        this.name = name;
+        this.status = status;
+        this.priority = priority;
+    }
+    display() {                                // no `function` keyword in a class
+        console.log(this.name + " → " + this.status);
+    }
+}
+let login = new TestCase("Login", "PASS", "P0");
+login.display();</code></pre>
+  <table>
+    <tr><th>Concept</th><th>Syntax</th><th>Note</th></tr>
+    <tr><td>Instance field</td><td><code>this.name</code></td><td>one copy per object</td></tr>
+    <tr><td>Private field</td><td><code>#name</code></td><td>only inside the class; outside access is a SyntaxError</td></tr>
+    <tr><td>Static field</td><td><code>static total = 0</code></td><td>one copy on the class, shared</td></tr>
+    <tr><td>Static method</td><td><code>static summary()</code></td><td>call <code>ClassName.summary()</code>; <code>this</code> is the class, not an instance</td></tr>
+    <tr><td>Constructor</td><td><code>constructor(a, b)</code></td><td>only one allowed — a second is a <code>SyntaxError</code></td></tr>
+    <tr><td>Default parameter</td><td><code>constructor(name = "staging")</code></td><td>used when the argument is missing</td></tr>
+  </table>
+  <pre><code>class TestRunner {
+    static totalTests = 0;
+    static passCount = 0;
+    constructor(name, passed) {
+        this.name = name;
+        TestRunner.totalTests++;                 // shared counter
+        if (passed) TestRunner.passCount++;
+    }
+    static summary() {
+        return TestRunner.passCount + "/" + TestRunner.totalTests + " passed";
+    }
+}
+new TestRunner("Login", true); new TestRunner("Signup", false);
+TestRunner.summary();       // "1/2 passed"
+
+class Credentials {
+    #apiKey;
+    constructor(user, key) { this.user = user; this.#apiKey = key; }
+    getAPI() { return this.#apiKey; }            // the only way out
+}
+new Credentials("admin", "secret").getAPI();     // "secret"</code></pre>
+  <div class="warn"><b>Trap in lab 186:</b> a <code>static</code> method that reads <code>this.name</code> gets <code>undefined</code>, because <code>this</code> there is the class, not an instance. Static methods see static fields, not instance fields.</div>
+  <div class="note"><b>Why classes matter for Playwright:</b> Page Objects are classes — constructor stores <code>page</code>, methods wrap locators and actions, static methods hold config (base URL, timeouts).</div>
+</section>
+
+<!-- ============ 20 ENCAPSULATION ============ -->
+<section class="sec">
+  <h2>20 · Encapsulation <span class="lab">labs 188–194</span></h2>
+  <pre><code>class ICICI {
+    #balance;
+    constructor(name, balance) { this.#balance = balance; this.name = name; }
+
+    getBalance() { return this.#balance; }
+
+    setBalance(balance, isCashier) {          // validation lives here
+        if (isCashier) this.#balance = balance;
+        else console.log("Not allowed");
+    }
+}
+let p = new ICICI("Pramod", 1000);
+p.getBalance();                 // 1000
+p.setBalance(10_000_000, false); // "Not allowed"
+p.setBalance(300_000, true);     // allowed</code></pre>
+  <p>Encapsulation = hidden state plus a controlled door. The <code>#</code> field cannot be touched from outside; every read and write goes through a method that can check, log, clamp or reject. Without <code>#</code>, <code>obj.balance = 0</code> would silently corrupt the object.</p>
+  <div class="qa"><b>Getters/setters alternative:</b> <code>get balance() { return this.#balance }</code> lets callers write <code>obj.balance</code> while the validation still runs. Same idea, nicer call site.</div>
+</section>
+
+<!-- ============ 21 INHERITANCE ============ -->
+<section class="sec">
+  <h2>21 · Inheritance, polymorphism <span class="lab">labs 195–208</span></h2>
+
+  <h3>Single inheritance and <code>super</code></h3>
+  <pre><code>class Animal {
+    constructor(name) { this.name = name; }
+    eat() { console.log(this.name + " is eating"); }
+    foo() { console.log("Foo"); }
+}
+class Dog extends Animal {
+    constructor(name, breed) {
+        super(name);              // MUST run before touching `this`
+        this.breed = breed;
+    }
+    bark() { super.foo(); console.log(this.name + " barks"); }
+}
+new Dog("Rex", "Labrador").eat();     // inherited
+new Dog("Rex", "Labrador").bark();    // calls the parent method with super.foo()</code></pre>
+  <table>
+    <tr><th>Type</th><th>Example in the labs</th><th>Chain</th></tr>
+    <tr><td>Single</td><td><code>LoginPage extends BasePage</code></td><td>A → B</td></tr>
+    <tr><td>Multilevel</td><td><code>AdminPage extends AuthPage extends BasePage</code></td><td>A → B → C</td></tr>
+    <tr><td>Hierarchical</td><td>several pages extend one <code>BasePage</code></td><td>one parent, many children</td></tr>
+    <tr><td>Multiple</td><td>not possible with <code>extends</code></td><td>use mixins</td></tr>
+    <tr><td>Hybrid</td><td>not possible directly</td><td>needs mixins + classes</td></tr>
+  </table>
+  <pre><code>// mixins give you "multiple inheritance"
+const LoggerMixin = Base =&gt; class extends Base {
+    log(m) { console.log("[Log] " + m); }
+};
+const ScreenshotMixin = Base =&gt; class extends Base {
+    takeScreenshot() { console.log("[SHOT] captured"); }
+};
+class SmartTest extends ScreenshotMixin(LoggerMixin(TestCase)) { }
+let t = new SmartTest("Login Flow");
+t.run(); t.log("started"); t.takeScreenshot();     // behaviour from three classes</code></pre>
+
+  <h3>Method overriding and polymorphism</h3>
+  <pre><code>class TestCase { execute() { console.log("generic test"); } }
+class UnitTest extends TestCase { execute() { console.log("unit"); } }
+class APITest  extends TestCase { execute() { console.log("api");  } }
+[new UnitTest(), new APITest()].forEach(t =&gt; t.execute());   // runtime dispatch</code></pre>
+  <p>The same call <code>t.execute()</code> runs the child's version. That is run-time polymorphism (method overriding); JS does not have compile-time overloading — a second method with the same name simply replaces the first.</p>
+  <pre><code>class A { who() { return "A"; } }
+class B extends A { who() { return "B&gt;" + super.who(); } }
+class C extends B { who() { return "C&gt;" + super.who(); } }
+new C().who();     // "C&gt;B&gt;A"</code></pre>
+</section>
+
+<!-- ============ 22 TYPESCRIPT ============ -->
+<section class="sec">
+  <h2>22 · TypeScript <span class="lab">labs 209–218</span></h2>
+  <p>TypeScript is JavaScript plus type annotations, checked before the code runs. Nothing about types exists at runtime — the compiler strips them.</p>
+  <pre><code>let testName: string = "Pramod";
+let name: string = "John";
+let age: number = 30;
+let pi: number = 3.14;              // there is no `float` type
+let isActive: boolean = true;
+let nothing: null = null;
+let notDefined: undefined = undefined;
+
+let numbers: number[] = [1, 2, 3];
+let names: Array&lt;string&gt; = ["John", "Jane"];   // same thing, generic form
+
+let anything: any = "hello";        // no checking — avoid
+let unknown: unknown = "hello";     // must be narrowed before use</code></pre>
+  <table>
+    <tr><th>Annotation</th><th>Meaning</th></tr>
+    <tr><td><code>: string / number / boolean</code></td><td>primitives (same eight types as JS, plus interfaces)</td></tr>
+    <tr><td><code>number[]</code>, <code>Array&lt;number&gt;</code></td><td>array of numbers</td></tr>
+    <tr><td><code>{ name: string; age: number }</code></td><td>inline object shape</td></tr>
+    <tr><td><code>: void</code></td><td>function returns nothing</td></tr>
+    <tr><td><code>: never</code></td><td>function never returns (always throws, or infinite loop)</td></tr>
+    <tr><td><code>any</code> / <code>unknown</code></td><td>no checking / checking deferred until narrowed</td></tr>
+  </table>
+  <pre><code>function greet(name: string): string { return `Hello, ${name}!`; }
+const multiply = (a: number, b: number): number =&gt; a * b;
+
+let user: { name: string; age: number } = { name: "John", age: 30 };
+
+function sayHello(msg: string): void { console.log(msg); }
+
+function throwError(message: string): never { throw new Error(message); }</code></pre>
+  <div class="note"><b>Why testers care:</b> the types are what stop <code>page.click(404)</code> and <code>expect(total).toBe("42")</code> from ever reaching CI — the editor flags them while you type.</div>
+</section>
+
+<!-- ============ 23 PLAYWRIGHT ============ -->
+<section class="sec">
+  <h2>23 · Playwright chapter <span class="lab">24_Playwright/</span></h2>
+  <pre><code>// playwright.config.ts (as generated, trimmed)
+export default defineConfig({
+  testDir: './tests',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: 'html',
+  use: { trace: 'on-first-retry' },
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'firefox',  use: { ...devices['Desktop Firefox'] } },
+    { name: 'webkit',   use: { ...devices['Desktop Safari'] } },
+  ],
+});</code></pre>
+  <pre><code>import { test, expect } from '@playwright/test';
+
+test('has title', async ({ page }) =&gt; {
+  await page.goto('https://playwright.dev/');
+  await expect(page).toHaveTitle(/Playwright/);
+});
+
+test('get started link', async ({ page }) =&gt; {
+  await page.goto('https://playwright.dev/');
+  await page.getByRole('link', { name: 'Get started' }).click();
+  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+});</code></pre>
+  <h3>Where <code>await</code> goes</h3>
+  <table>
+    <tr><th>Returns a promise → <code>await</code></th><th>Returns immediately → no <code>await</code></th></tr>
+    <tr><td><code>page.goto()</code>, <code>reload()</code>, <code>close()</code></td><td><code>page.locator()</code>, <code>getByRole()</code>, <code>getByText()</code></td></tr>
+    <tr><td><code>locator.click()</code>, <code>fill()</code>, <code>isVisible()</code></td><td><code>locator.first()</code>, <code>nth()</code>, <code>filter()</code></td></tr>
+    <tr><td><code>page.title()</code>, <code>screenshot()</code>, <code>waitForURL()</code></td><td><code>page.url()</code>, <code>isClosed()</code>, <code>context()</code></td></tr>
+    <tr><td><code>expect(locator).toBeVisible()</code></td><td><code>page.keyboard</code>, <code>page.mouse</code> (properties)</td></tr>
+  </table>
+  <div class="qa"><b>Rule:</b> if the call has to talk to the browser, it is a promise and needs <code>await</code>. Building a locator does not touch the browser, so it does not. Forgetting <code>await</code> on a promise is the number-one cause of flaky tests.</div>
+  <p class="fine">Playwright's own <code>expect()</code> is strict: <code>expect("5").toBe(5)</code> fails, exactly like <code>===</code>. Text from a page is always a string.</p>
+</section>
+
+<!-- ============ 24 TRAPS ============ -->
+<section class="sec">
+  <h2>24 · Interview traps: 30 one-liners</h2>
+  <div class="cols">
+    <table>
+      <tr><th>#</th><th>Question</th><th>Answer</th></tr>
+      <tr><td>1</td><td><code>typeof null</code></td><td>"object"</td></tr>
+      <tr><td>2</td><td><code>typeof typeof 123</code></td><td>"string"</td></tr>
+      <tr><td>3</td><td><code>typeof NaN</code></td><td>"number"</td></tr>
+      <tr><td>4</td><td><code>NaN === NaN</code></td><td>false</td></tr>
+      <tr><td>5</td><td><code>null == undefined</code></td><td>true</td></tr>
+      <tr><td>6</td><td><code>null === undefined</code></td><td>false</td></tr>
+      <tr><td>7</td><td><code>null == 0</code> / <code>null &gt;= 0</code></td><td>false / true</td></tr>
+      <tr><td>8</td><td><code>"" == 0</code> / <code>"" == "0"</code></td><td>true / false</td></tr>
+      <tr><td>9</td><td><code>[] == false</code></td><td>true</td></tr>
+      <tr><td>10</td><td><code>[] === []</code></td><td>false</td></tr>
+      <tr><td>11</td><td><code>0.1 + 0.2</code></td><td>0.30000000000000004</td></tr>
+      <tr><td>12</td><td><code>1 / 0</code>, <code>0 / 0</code></td><td>Infinity, NaN</td></tr>
+      <tr><td>13</td><td><code>-7 % 2</code></td><td>-1</td></tr>
+      <tr><td>14</td><td><code>"5" - 1</code> / <code>"5" + 1</code></td><td>4 / "51"</td></tr>
+      <tr><td>15</td><td><code>0 || 5</code> / <code>0 ?? 5</code></td><td>5 / 0</td></tr>
+    </table>
+    <table>
+      <tr><th>#</th><th>Question</th><th>Answer</th></tr>
+      <tr><td>16</td><td><code>a=10; let b=++a</code></td><td>b = 11, a = 11</td></tr>
+      <tr><td>17</td><td><code>a=10; let b=a++</code></td><td>b = 10, a = 11</td></tr>
+      <tr><td>18</td><td><code>++a + a</code> (a=10)</td><td>22</td></tr>
+      <tr><td>19</td><td><code>++a + a + a++</code> (a=10)</td><td>33, a = 12</td></tr>
+      <tr><td>20</td><td><code>i++ + ++i</code> (i=1)</td><td>4, i = 3</td></tr>
+      <tr><td>21</td><td><code>[10,1,2].sort()</code></td><td>[1, 10, 2]</td></tr>
+      <tr><td>22</td><td><code>[, , x] = [1,2,3]</code></td><td>x = 3</td></tr>
+      <tr><td>23</td><td><code>"abc".charAt(-1)</code> / <code>.at(-1)</code></td><td>"" / "c"</td></tr>
+      <tr><td>24</td><td><code>typeof [1,2]</code></td><td>"object" (use <code>Array.isArray</code>)</td></tr>
+      <tr><td>25</td><td>Hoisted <code>var</code> read early</td><td>undefined</td></tr>
+      <tr><td>26</td><td>Hoisted <code>let</code> read early</td><td>ReferenceError (TDZ)</td></tr>
+      <tr><td>27</td><td><code>let x</code> twice in one scope</td><td>SyntaxError</td></tr>
+      <tr><td>28</td><td><code>const o = {}; o.a = 1</code></td><td>fine (mutation allowed)</td></tr>
+      <tr><td>29</td><td><code>1n + 1</code></td><td>TypeError</td></tr>
+      <tr><td>30</td><td><code>a || b ?? c</code></td><td>SyntaxError (needs parentheses)</td></tr>
+    </table>
+  </div>
+  <h3>Three definitions to have ready</h3>
+  <table>
+    <tr><th>Term</th><th>Say this</th></tr>
+    <tr><td>Hoisting</td><td>Declarations are registered before execution: <code>var</code> gets <code>undefined</code>, <code>let</code>/<code>const</code> stay uninitialised in the TDZ, function declarations are fully available.</td></tr>
+    <tr><td>Closure</td><td>A function keeps access to the variables of the scope where it was created, even after that scope has returned.</td></tr>
+    <tr><td>Event loop</td><td>Synchronous code runs to completion, then microtasks (<code>await</code>, <code>then</code>), then macrotasks (<code>setTimeout</code>, I/O). That is why "Test 1, Test 3, Test 2".</td></tr>
+  </table>
+</section>
+
+<!-- ============ 25 DRILL ============ -->
+<section class="sec">
+  <h2>25 · Output prediction drill</h2>
+  <p>Cover the right column, run each line mentally, then check. Every answer is what Node 22+ actually prints.</p>
+  <table>
+    <tr><th>Code</th><th>Output</th></tr>
+    <tr><td><code>console.log(1 + "2" + 3)</code></td><td class="answer">"123"</td></tr>
+    <tr><td><code>console.log(1 + 2 + "3")</code></td><td class="answer">"33"</td></tr>
+    <tr><td><code>console.log(typeof (1 + "2"))</code></td><td class="answer">"string"</td></tr>
+    <tr><td><code>console.log(+"")</code></td><td class="answer">0</td></tr>
+    <tr><td><code>console.log(Boolean([]))</code></td><td class="answer">true</td></tr>
+    <tr><td><code>console.log(Array(2).length)</code></td><td class="answer">2</td></tr>
+    <tr><td><code>console.log([1,2,3].slice(-1))</code></td><td class="answer">[3]</td></tr>
+    <tr><td><code>console.log([1,2,3].splice(1,1))</code></td><td class="answer">[2] (and the array is now [1,3])</td></tr>
+    <tr><td><code>console.log([1,2,3].includes("2"))</code></td><td class="answer">false</td></tr>
+    <tr><td><code>console.log([10,9,1].sort())</code></td><td class="answer">[1, 10, 9]</td></tr>
+    <tr><td><code>console.log([1,2,3].map(x =&gt; x * 2))</code></td><td class="answer">[2, 4, 6]</td></tr>
+    <tr><td><code>console.log([1,2,3].forEach(x =&gt; x * 2))</code></td><td class="answer">undefined</td></tr>
+    <tr><td><code>console.log([1,2,3].filter(x =&gt; x &gt; 1).length)</code></td><td class="answer">2</td></tr>
+    <tr><td><code>for (let i in [10,20]) console.log(i)</code></td><td class="answer">"0" then "1" (index strings)</td></tr>
+    <tr><td><code>for (let i of [10,20]) console.log(i)</code></td><td class="answer">10 then 20</td></tr>
+    <tr><td><code>console.log(Math.ceil(25 / 10))</code></td><td class="answer">3</td></tr>
+    <tr><td><code>console.log(2 ** 3 ** 2)</code></td><td class="answer">512 (right-associative)</td></tr>
+    <tr><td><code>console.log("5" * "2")</code></td><td class="answer">10</td></tr>
+    <tr><td><code>console.log("a" &amp;&amp; "b")</code></td><td class="answer">"b"</td></tr>
+    <tr><td><code>console.log("" || "b")</code></td><td class="answer">"b"</td></tr>
+    <tr><td><code>console.log(false ?? "b")</code></td><td class="answer">false</td></tr>
+    <tr><td><code>let a=5; a++ + ++a</code></td><td class="answer">12 (5 + 7)</td></tr>
+    <tr><td><code>let x=1; x += x++ + x</code></td><td class="answer">4 (1 + 1 + 2)</td></tr>
+    <tr><td><code>console.log(typeof function(){})</code></td><td class="answer">"function"</td></tr>
+    <tr><td><code>console.log([1,2] + [3])</code></td><td class="answer">"1,23"</td></tr>
+    <tr><td><code>console.log(0.1 * 3 === 0.3)</code></td><td class="answer">false</td></tr>
+    <tr><td><code>console.log(Number("12px"))</code></td><td class="answer">NaN</td></tr>
+    <tr><td><code>console.log(parseInt("12px"))</code></td><td class="answer">12</td></tr>
+    <tr><td><code>console.log((123.456).toFixed(1))</code></td><td class="answer">"123.5" (a string)</td></tr>
+    <tr><td><code>console.log("Hello".length, "Hello"[1])</code></td><td class="answer">5 "e"</td></tr>
+    <tr><td><code>console.log([1,[2,[3]]].flat(2))</code></td><td class="answer">[1, 2, 3]</td></tr>
+    <tr><td><code>console.log([..."abc"])</code></td><td class="answer">["a","b","c"]</td></tr>
+  </table>
+</section>
+
+<!-- ============ 26 BUG HUNT ============ -->
+<section class="sec">
+  <h2>26 · Bug hunt: what is wrong here?</h2>
+  <p>These are the mistakes the labs deliberately contain, plus the ones they warn about. Being able to name the fix is the interview answer.</p>
+  <table>
+    <tr><th>Code</th><th>Problem</th><th>Fix</th></tr>
+    <tr><td><code>if (x = 5)</code></td><td>assignment, always truthy</td><td><code>x === 5</code></td></tr>
+    <tr><td><code>5 !=== "5"</code></td><td>no such operator</td><td><code>!==</code></td></tr>
+    <tr><td><code>if (score &gt; 90)</code> for an A starting at 90</td><td>boundary off by one</td><td><code>&gt;= 90</code></td></tr>
+    <tr><td><code>n % 2 == 1</code> for odd</td><td>fails for negatives</td><td><code>n % 2 !== 0</code></td></tr>
+    <tr><td><code>[10,1,2].sort()</code></td><td>lexicographic, not numeric</td><td><code>.sort((a,b) =&gt; a - b)</code></td></tr>
+    <tr><td><code>let b = a;</code> then mutate <code>b</code></td><td>same object, aliasing</td><td><code>{ ...a }</code> / <code>structuredClone(a)</code></td></tr>
+    <tr><td><code>++</code> on a <code>const</code></td><td>TypeError</td><td>use <code>let</code> or <code>+= 1</code> on a new binding</td></tr>
+    <tr><td><code>1n + 1</code></td><td>mixed BigInt and number</td><td><code>1n + 1n</code>, or <code>BigInt(1)</code></td></tr>
+    <tr><td><code>a || b ?? c</code></td><td>SyntaxError</td><td><code>(a || b) ?? c</code></td></tr>
+    <tr><td><code>switch</code> case without <code>break</code></td><td>fall-through prints everything</td><td>add <code>break</code> / <code>return</code></td></tr>
+    <tr><td><code>switch (0)</code> with <code>case false</code></td><td>strict comparison, never matches</td><td><code>case 0</code></td></tr>
+    <tr><td><code>for (let i = 5; i &lt; 5; i++)</code></td><td>runs zero times</td><td>fix the bound</td></tr>
+    <tr><td><code>setTimeout(fn), 100</code></td><td>the delay is outside the call</td><td><code>setTimeout(fn, 100)</code></td></tr>
+    <tr><td><code>deep = original</code> for arrays/objects</td><td>alias, not a copy</td><td><code>[...a]</code> / <code>structuredClone(a)</code></td></tr>
+    <tr><td><code>arr.slice(-3, -5)</code> expecting data</td><td>start after end → <code>[]</code></td><td>order the args, or use one negative</td></tr>
+    <tr><td><code>new Partition(3)</code>… i.e. <code>new Array(3)</code></td><td>3 holes, not <code>[3]</code></td><td><code>[3]</code> or <code>Array.of(3)</code></td></tr>
+    <tr><td><code>data.status</code> from a page as a number</td><td>text is a string</td><td><code>Number(text)</code>, then assert</td></tr>
+    <tr><td><code>page.locator('#a')</code> awaited</td><td>harmless but misleading</td><td>await the action, not the locator</td></tr>
+    <tr><td>missing <code>await</code> before <code>page.goto</code></td><td>test races the page</td><td><code>await page.goto(...)</code></td></tr>
+    <tr><td><code>await</code> in a non-async function</td><td>SyntaxError</td><td>mark the function <code>async</code></td></tr>
+    <tr><td><code>s()</code> logged without <code>await</code></td><td>prints a Promise object</td><td><code>console.log(await s())</code></td></tr>
+    <tr><td>two constructors in one class</td><td>SyntaxError</td><td>one constructor, default parameters</td></tr>
+    <tr><td><code>this.name</code> inside a <code>static</code> method</td><td><code>undefined</code></td><td>use <code>ClassName.name</code> or an instance</td></tr>
+    <tr><td><code>super()</code> skipped before <code>this.x</code></td><td>ReferenceError</td><td>call <code>super(...)</code> first</td></tr>
+    <tr><td>import <code>./testutil.js</code> when the file is <code>testutils.js</code></td><td>ERR_MODULE_NOT_FOUND</td><td>match the filename</td></tr>
+  </table>
+</section>
+
+<!-- ============ 27 GLOSSARY ============ -->
+<section class="sec">
+  <h2>27 · Glossary</h2>
+  <table>
+    <tr><th>Term</th><th>Meaning in one line</th></tr>
+    <tr><td>Literal</td><td>A value written directly in code: <code>10</code>, <code>"hi"</code>, <code>true</code>, <code>null</code>.</td></tr>
+    <tr><td>Expression</td><td>Values plus operators that produce a new value.</td></tr>
+    <tr><td>Statement</td><td>A complete instruction: <code>let x = 1;</code>, <code>if () {}</code>.</td></tr>
+    <tr><td>Coercion</td><td>Automatic type conversion, e.g. <code>"5" == 5</code>.</td></tr>
+    <tr><td>Falsy</td><td><code>false, 0, "", null, undefined, NaN</code> — the only six.</td></tr>
+    <tr><td>Hoisting</td><td>Declarations registered before the code runs.</td></tr>
+    <tr><td>TDZ</td><td>The gap between a <code>let</code>/<code>const</code> name existing and being initialised; reading inside it throws.</td></tr>
+    <tr><td>Closure</td><td>A function that remembers its defining scope.</td></tr>
+    <tr><td>IIFE</td><td>A function that runs the moment it is defined.</td></tr>
+    <tr><td>Shallow copy</td><td>New outer container, shared inner values (<code>{...a}</code>, <code>[...a]</code>).</td></tr>
+    <tr><td>Deep copy</td><td>Everything duplicated at every level (<code>structuredClone</code>).</td></tr>
+    <tr><td>Callback</td><td>A function passed to another function to be called later.</td></tr>
+    <tr><td>Promise</td><td>An object that settles once: fulfilled or rejected.</td></tr>
+    <tr><td>Microtask</td><td>Work queued by <code>await</code>/<code>then</code>, runs before timers.</td></tr>
+    <tr><td>Macrotask</td><td>Work queued by <code>setTimeout</code>/I/O, runs after microtasks.</td></tr>
+    <tr><td>Mixin</td><td>A function that takes a class and returns an extended class — JS's multiple inheritance.</td></tr>
+    <tr><td>Encapsulation</td><td>Private state (<code>#field</code>) with controlled accessors.</td></tr>
+    <tr><td>Polymorphism</td><td>Same method name, different behaviour per class; resolved at runtime.</td></tr>
+    <tr><td>ESM / CJS</td><td><code>import/export</code> versus <code>require/module.exports</code>.</td></tr>
+    <tr><td>Type annotation</td><td>A compile-time label (<code>: string</code>) that disappears at runtime.</td></tr>
+    <tr><td>Never</td><td>A return type for functions that never return.</td></tr>
+  </table>
+
+  <h3>Command cheats</h3>
+  <pre><code>node --version
+node 01_chapter_Javascript_Basics/01_HelloWorld.js
+node 02_chapter_Javascript_Keywords_Indentifiers/09_IQ.js
+npx playwright test
+npx playwright test --headed
+npx playwright show-report          # opens the HTML report
+npx tsc --noEmit                    # type-check only</code></pre>
+</section>
+
+<!-- ============ 28 INDEX ============ -->
+<section class="sec">
+  <h2>28 · Lab → topic index</h2>
+  <table>
+    <tr><th>Labs</th><th>Chapter</th><th>Topic</th><th>Part here</th></tr>
+    <tr><td>1–2</td><td>01 Javascript Basics</td><td>console.log, arithmetic</td><td>01</td></tr>
+    <tr><td>3–4</td><td>02 Keywords &amp; Identifiers</td><td>V8/JIT, smallest program</td><td>01</td></tr>
+    <tr><td>5–9</td><td>02 Keywords &amp; Identifiers</td><td>var/let/const, identifier rules, naming, comments</td><td>02</td></tr>
+    <tr><td>10–18</td><td>03 Literals</td><td>typeof, null vs undefined, number forms, BigInt, Infinity/NaN</td><td>03</td></tr>
+    <tr><td>19–37</td><td>04 Operators</td><td>arithmetic, assignment, ==/===, logical, coercion traps, strings, ternary, typeof</td><td>04</td></tr>
+    <tr><td>38–45</td><td>05 Increment &amp; Nullish</td><td>++/--, IQ tracing, ??</td><td>05</td></tr>
+    <tr><td>46–49</td><td>06 if/else</td><td>branches, nesting, grade calculator</td><td>06</td></tr>
+    <tr><td>50–58</td><td>07 switch</td><td>cases, fall-through, grouping, switch(true), strict match</td><td>06</td></tr>
+    <tr><td>59–62</td><td>08 User Input</td><td>prompt, readline, prompt-sync, readFileSync(0)</td><td>07</td></tr>
+    <tr><td>63–69</td><td>09 Loops</td><td>for, ICU, infinite loop, break</td><td>07</td></tr>
+    <tr><td>70–73</td><td>10 While</td><td>while, retries, break out</td><td>07</td></tr>
+    <tr><td>74–77</td><td>11 Do-While</td><td>do-while vs while, nested loops</td><td>07</td></tr>
+    <tr><td>78–100</td><td>12 Arrays</td><td>create/access, push/pop/splice, search, iterate, map/filter/every/some, sort, slice, copy, destructure, swap</td><td>08</td></tr>
+    <tr><td>101–116</td><td>13 Functions</td><td>four types, expression, arrow, IIFE, rest/spread, return</td><td>09</td></tr>
+    <tr><td>117–127</td><td>14 var/let/const</td><td>scope, hoisting, TDZ</td><td>10</td></tr>
+    <tr><td>128</td><td>15 Closures</td><td>closure</td><td>11</td></tr>
+    <tr><td>129–131</td><td>16 String</td><td>quotes, template literals, length/at/charAt, search</td><td>12</td></tr>
+    <tr><td>132–139</td><td>17 Objects</td><td>access, add/delete, reference vs value, shallow/deep copy</td><td>13</td></tr>
+    <tr><td>140–146</td><td>18 2D Arrays</td><td>matrix, row sums, star/pyramid patterns</td><td>14</td></tr>
+    <tr><td>147–154</td><td>19 Callback</td><td>sync vs async, callback hell, pyramid of doom</td><td>15</td></tr>
+    <tr><td>155–161</td><td>20 Promise</td><td>resolve/reject, then/catch/finally, chaining, all/allSettled/race</td><td>16</td></tr>
+    <tr><td>162–171</td><td>21 Async/Await</td><td>await, try/catch, sequential vs parallel, event loop, retry</td><td>17</td></tr>
+    <tr><td>172–174</td><td>22 Export/Import</td><td>named, default, alias, logger utility</td><td>18</td></tr>
+    <tr><td>175–187</td><td>23/25 Classes</td><td>class, constructor, private #, static, this</td><td>19</td></tr>
+    <tr><td>188–194</td><td>26 Encapsulation</td><td>private fields, getters/setters, validation</td><td>20</td></tr>
+    <tr><td>195–207</td><td>27 Inheritance</td><td>extends, super, override, multilevel, mixins, hierarchy</td><td>21</td></tr>
+    <tr><td>207–208</td><td>28 Polymorphism</td><td>runtime dispatch</td><td>21</td></tr>
+    <tr><td>209–212</td><td>29 IQ</td><td>class/this/chaining drills, TS preview</td><td>21–22</td></tr>
+    <tr><td>213–218</td><td>30–31 TypeScript</td><td>annotations, arrays, any/unknown, functions, void/never</td><td>22</td></tr>
+    <tr><td>24_Playwright</td><td>24 Playwright</td><td>config, first spec, await rules</td><td>23</td></tr>
+  </table>
+
+  <h3>Five-minute pre-interview sweep</h3>
+  <ol>
+    <li><code>===</code> always; know why <code>"" == 0</code> is true and <code>"" == "0"</code> is false.</li>
+    <li><code>typeof</code>: <code>null</code> → object, <code>NaN</code> → number, <code>[]</code> → object, <code>typeof typeof x</code> → string.</li>
+    <li><code>++a</code> changes then uses; <code>a++</code> uses then changes. Trace two columns.</li>
+    <li>Arrays: <code>sort()</code> is lexicographic; <code>slice</code> copies, <code>splice</code> mutates; <code>map</code> returns, <code>forEach</code> does not.</li>
+    <li>Objects: <code>=</code> copies the reference; spread is shallow; <code>structuredClone</code> is deep.</li>
+    <li>Hoisting: <code>var</code> → <code>undefined</code>, <code>let/const</code> → TDZ error.</li>
+    <li>Async: <code>async</code> returns a promise; <code>await</code> unwraps; <code>Promise.all</code> fails fast; sequential vs parallel timing.</li>
+    <li>OOP: <code>extends</code> + <code>super</code>, <code>#private</code>, <code>static</code>, no multiple inheritance without mixins.</li>
+    <li>Playwright: <code>await</code> everything that touches the browser; locators are lazy and need no <code>await</code>.</li>
+    <li>Pop quiz yourself with Part 25 — if you get 28 of 32, you are ready.</li>
+  </ol>
+
+  <footer>Notes generated from the 218 lab files in this repository. Where a lab's own comment disagreed with what Node prints, the verified output is shown. Companion files: chapter READMEs and <code>12_chapters_Arrays/91_Lexicographic_Explain.md</code>, <code>93_Slice_Explain.md</code>, <code>00_learning/*.md</code>.</footer>
+</section>
+
+</div>
+</body>
+</html>
